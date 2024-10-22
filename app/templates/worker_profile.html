@@ -9,9 +9,31 @@
     <h1>
         Worker Profile
     </h1>
-    <p>
-        Manage your profile, availability, and skills here!
-    </p>
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.skill_name.label }}
+            {{ form.skill_name() }}
+        </div>
+        <div>
+            {{ form.experience_level.label }}
+            {{ form.experience_level() }}
+        </div>
+        <div>
+            {{ form.submit() }}
+        </div>
+    </form>
+
+    <h2>
+        Your Skills
+    </h2>
+    <ul>
+        {% for skill in skills %}
+        <li>
+            {{ skill.skill_name }} - Experience Level: {{ skill.experience_level }}
+        </li>
+        {% endfor %}
+    </ul>
     <a href="{{ url_for('home.home') }}">Back to Home</a>
 </body>
 </html>
