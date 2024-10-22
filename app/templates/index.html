@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Services Market - Homepage</title>
+</head>
+<body>
+    <h1>
+        Welcome to the Local Services Market
+    </h1>
+    <nav>
+        <ul>
+            <li>
+                <a href="{{ url_for('worker.worker_page') }}">Worker Profile</a>
+            </li>
+            <li>
+                <a href="{{ url_for('employer.employer_page') }}">Employer Dashboard</a>
+            </li>
+        </ul>
+    </nav>
+</body>
+</html>
