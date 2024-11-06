@@ -13,7 +13,8 @@
             <h1>LocalLink</h1>
         </div>
         <div class="auth-container">
-            <button class="auth-button">Login</button>
+            <!-- Link to Login page using Flask route -->
+            <a href="{{ url_for('login.login_page') }}" class="auth-button">Login</a>
         </div>
     </header>
 
