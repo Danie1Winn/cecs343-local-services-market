@@ -4,20 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LocalLink</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 </head>
 <body>
-    <h1>
-        Welcome to the Local Services Market
-    </h1>
-    <nav>
-        <ul>
-            <li>
-                <a href="{{ url_for('worker.worker_page') }}">Worker Profile</a>
-            </li>
-            <li>
-                <a href="{{ url_for('employer.employer_page') }}">Employer Dashboard</a>
-            </li>
-        </ul>
-    </nav>
+    <!-- Header with Logo and Login -->
+    <header>
+        <div class="logo">
+            <h1>LocalLink</h1>
+        </div>
+        <div class="auth-container">
+            <button class="auth-button">Login</button>
+        </div>
+    </header>
+
+    <!-- Hero Section with Search Bar -->
+    <main>
+        <section class="hero">
+            <h2>Discover Services Near You</h2>
+            <p>Your one-stop solution for local services</p>
+            <div class="search-bar">
+                <input type="text" placeholder="Search for services...">
+                <button>Search</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 LocalLink. All rights reserved.</p>
+    </footer>
 </body>
 </html>
