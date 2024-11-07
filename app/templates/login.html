@@ -5,6 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    <script>
+        // Function to switch between tabs
+        function showTab(tabName) {
+            const businessForm = document.getElementById('businessForm');
+            const individualForm = document.getElementById('individualForm');
+            const businessTab = document.getElementById('businessTab');
+            const individualTab = document.getElementById('individualTab');
+
+            if (tabName === 'business') {
+                businessForm.style.display = 'block';
+                individualForm.style.display = 'none';
+                businessTab.classList.add('active');
+                individualTab.classList.remove('active');
+            } else {
+                businessForm.style.display = 'none';
+                individualForm.style.display = 'block';
+                individualTab.classList.add('active');
+                businessTab.classList.remove('active');
+            }
+        }
+    </script>
 </head>
 <body>
     <header>
@@ -18,15 +39,34 @@
 
     <div class="login-container">
         <h2>Login</h2>
-        <form action="{{ url_for('login.login_page') }}" method="POST">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" class="form-input" required placeholder="Enter your email">
+        
+        <!-- Tabs for Business and Individual -->
+        <div class="tabs">
+            <div id="individualTab" class="tab active" onclick="showTab('individual')">Individual</div>
+            <div id="businessTab" class="tab" onclick="showTab('business')">Business</div>
+        </div>
 
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" class="form-input" required placeholder="Enter your password">
-
+        <!-- Business Login Form -->
+        <form id="businessForm" action="{{ url_for('login.login_page') }}" method="POST">
+            <label for="businessEmail">Email:</label>
+            <input type="email" id="businessEmail" name="email" class="form-input" required placeholder="Enter business email">
+            
+            <label for="businessPassword">Password:</label>
+            <input type="password" id="businessPassword" name="password" class="form-input" required placeholder="Enter business password">
+            
             <button type="submit" class="form-button">Login</button>
-        </form> 
+        </form>
+
+        <!-- Individual Login Form -->
+        <form id="individualForm" action="{{ url_for('login.login_page') }}" method="POST" style="display: none;">
+            <label for="individualEmail">Email:</label>
+            <input type="email" id="individualEmail" name="email" class="form-input" required placeholder="Enter your email">
+            
+            <label for="individualPassword">Password:</label>
+            <input type="password" id="individualPassword" name="password" class="form-input" required placeholder="Enter your password">
+            
+            <button type="submit" class="form-button">Login</button>
+        </form>
 
         <div class="signup-link">
             <p>Don't have an account? <a href="{{ url_for('signup.signup_page') }}">Sign up here</a></p>
@@ -36,6 +76,5 @@
     <footer>
         <p>&copy; 2024 LocalLink. All rights reserved.</p>
     </footer>
-
 </body>
 </html>
