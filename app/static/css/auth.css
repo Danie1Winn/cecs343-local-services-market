@@ -68,7 +68,7 @@ header {
     margin-bottom: 20px;
 }
 
-/* Tabs for Business and Individual */
+/* Tabs for employer and worker */
 .tabs {
     display: flex;
     justify-content: space-around;
@@ -98,17 +98,17 @@ header {
 }
 
 /* Form Containers */
-#businessForm, #individualForm {
+#employerForm, #workerForm {
     display: none; /* Hidden by default */
 }
 
-/* Show Business Form when active */
-#businessForm {
+/* Show employer Form when active */
+#employerForm {
     display: block;
 }
 
-/* Show Individual Form when active */
-#individualForm {
+/* Show worker Form when active */
+#workerForm {
     display: none;
 }
 

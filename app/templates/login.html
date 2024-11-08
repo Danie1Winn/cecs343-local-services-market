@@ -4,28 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
-    <script>
-        // Function to switch between tabs
-        function showTab(tabName) {
-            const businessForm = document.getElementById('businessForm');
-            const individualForm = document.getElementById('individualForm');
-            const businessTab = document.getElementById('businessTab');
-            const individualTab = document.getElementById('individualTab');
-
-            if (tabName === 'business') {
-                businessForm.style.display = 'block';
-                individualForm.style.display = 'none';
-                businessTab.classList.add('active');
-                individualTab.classList.remove('active');
-            } else {
-                businessForm.style.display = 'none';
-                individualForm.style.display = 'block';
-                individualTab.classList.add('active');
-                businessTab.classList.remove('active');
-            }
-        }
-    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
 </head>
 <body>
     <header>
@@ -40,30 +19,30 @@
     <div class="login-container">
         <h2>Login</h2>
         
-        <!-- Tabs for Business and Individual -->
+        <!-- Tabs for Employer and Worker -->
         <div class="tabs">
-            <div id="individualTab" class="tab active" onclick="showTab('individual')">Individual</div>
-            <div id="businessTab" class="tab" onclick="showTab('business')">Business</div>
+            <div id="workerTab" class="tab active" onclick="showTab('worker')">Workers</div>
+            <div id="employerTab" class="tab" onclick="showTab('employer')">Employers</div>
         </div>
 
-        <!-- Business Login Form -->
-        <form id="businessForm" action="{{ url_for('login.login_page') }}" method="POST">
-            <label for="businessEmail">Email:</label>
-            <input type="email" id="businessEmail" name="email" class="form-input" required placeholder="Enter business email">
+        <!-- Employer Login Form -->
+        <form id="employerForm" action="{{ url_for('login.login_page') }}" method="POST">
+            <label for="employerPhone">Phone Number:</label>
+            <input type="tel" id="employerPhone" name="phone" class="form-input" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required placeholder="Enter phone number">
             
-            <label for="businessPassword">Password:</label>
-            <input type="password" id="businessPassword" name="password" class="form-input" required placeholder="Enter business password">
+            <label for="employerPassword">Password:</label>
+            <input type="password" id="employerPassword" name="password" class="form-input" required placeholder="Enter password">
             
             <button type="submit" class="form-button">Login</button>
         </form>
 
-        <!-- Individual Login Form -->
-        <form id="individualForm" action="{{ url_for('login.login_page') }}" method="POST" style="display: none;">
-            <label for="individualEmail">Email:</label>
-            <input type="email" id="individualEmail" name="email" class="form-input" required placeholder="Enter your email">
+        <!-- Worker Login Form -->
+        <form id="workerForm" action="{{ url_for('login.login_page') }}" method="POST" style="display: none;">
+            <label for="workerPhone">Phone Number:</label>
+            <input type="tel" id="workerPhone" name="phone" class="form-input" required placeholder="Enter phone number">
             
-            <label for="individualPassword">Password:</label>
-            <input type="password" id="individualPassword" name="password" class="form-input" required placeholder="Enter your password">
+            <label for="workerPassword">Password:</label>
+            <input type="password" id="workerPassword" name="password" class="form-input" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required placeholder="Enter password">
             
             <button type="submit" class="form-button">Login</button>
         </form>
@@ -76,5 +55,6 @@
     <footer>
         <p>&copy; 2024 LocalLink. All rights reserved.</p>
     </footer>
+    <script src = "{{ url_for('static', filename='js/auth.js') }}"></script>
 </body>
 </html>
