@@ -102,12 +102,10 @@ header {
     display: none; /* Hidden by default */
 }
 
-/* Show employer Form when active */
 #employerForm {
     display: block;
 }
 
-/* Show worker Form when active */
 #workerForm {
     display: none;
 }
@@ -166,9 +164,10 @@ footer {
     margin-top: auto; 
 }
 
+/* Profile Icon for Worker Form */
 .profile-icon {
-    width: 50px;
-    height: 50px;
+    width: 100px; /* Adjusted size for better visibility */
+    height: 100px;
     border-radius: 50%;
     background-color: #ddd;
     display: flex;
@@ -198,19 +197,27 @@ footer {
     cursor: pointer;
 }
 
+/* Error Message Styling */
 .error-message {
     display: none;
-    color: #d9534f;
+    color: #d9534f; /* Bootstrap danger red */
     font-size: 14px;
     margin-top: 5px;
     padding: 8px;
-    background-color: #f2dede;
-    border: 1px solid #ebccd1;
+    background-color: #f2dede; /* Light red background */
+    border: 1px solid #ebccd1; /* Red border */
     border-radius: 4px;
     width: 100%;
     box-sizing: border-box;
 }
 
+/* Highlight input field with errors */
+.error-highlight {
+    border: 2px solid #d9534f; /* Highlight border in red */
+    background-color: #fef2f2; /* Subtle light red background */
+}
+
+/* Password or Profile Picture Error Displayed */
 .form-input:invalid + .error-message {
     display: block;
 }

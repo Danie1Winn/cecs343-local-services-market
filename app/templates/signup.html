@@ -27,26 +27,30 @@
 
         <!-- employer Form -->
         <div id="employerForm" class="form-container" style="display: none;">
-            <form action="{{ url_for('signup.signup_page') }}" method="POST">
+            <form action="{{ url_for('signup.signup_page') }}" method="POST" onsubmit="return validateEmployerForm()">
                 <label for="name">Employer Name:</label>
                 <input type="text" id="name" name="name" class="form-input" required placeholder="Enter your employer name">
 
                 <label for="employerPhone">Phone Number:</label>
                 <input type="tel" id="employerPhone" name="phone" class="form-input" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required placeholder="Enter phone number">
 
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" minlength="8" class="form-input" required placeholder="Create a password">
-
-                <label for="password">Re-enter Password:</label>
-                <input type="password" id="re-password" name="re-password" class="form-input" required placeholder="Re-enter password">
-
+                <label for="employerPassword">Password:</label>
+                <input type="password" id="employerPassword" name="password" minlength="8" class="form-input" required placeholder="Create a password">
+                
+                <label for="employerRe-Password">Re-enter Password:</label>
+                <input type="password" id="employerRe-Password" name="re-password" class="form-input" required placeholder="Re-enter password">
+                
+                <div id="password-error" class="error-message">
+                    Please enter the same password.
+                
+                </div>
                 <button type="submit" class="form-button">Sign Up</button>
             </form>
         </div>
 
         <!-- worker Form -->
         <div id="workerForm" class="form-container" style="display: block;">
-            <form action="{{ url_for('signup.signup_page') }}" method="POST" onsubmit="return validateForm()">
+            <form action="{{ url_for('signup.signup_page') }}" method="POST" onsubmit="return validateWorkerForm()">
                 <div class="profile-icon">
                     <img id="profile-pic" src="{{ url_for('static', filename='images/default-pfp.png') }}" alt="Profile Picture">
                     <input type="file" id="profile-picture" name="profile-picture" class="upload-input" accept="image/*" onchange="showImage(event)">
@@ -60,12 +64,16 @@
                 <label for="workerPhone">Phone Number:</label>
                 <input type="tel" id="workerPhone" name="phone" class="form-input" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required placeholder="Enter phone number">
             
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" minlength="8" class="form-input" required placeholder="Create a password">
-            
-                <label for="password">Re-enter Password:</label>    
-                <input type="password" id="re-password" name="re-password" class="form-input" required placeholder="Re-enter password">
-            
+                <label for="workerPassword">Password:</label>
+                <input type="password" id="workerPassword" name="password" minlength="8" class="form-input" required placeholder="Create a password">
+                
+                <label for="workerRe-Password">Re-enter Password:</label>
+                <input type="password" id="workerRe-Password" name="re-password" class="form-input" required placeholder="Re-enter password">
+                
+                <div id="worker-password-error" class="error-message">
+                    Please enter the same password.
+                </div>
+
                 <button type="submit" class="form-button">Sign Up</button>
             </form>
         </div>
