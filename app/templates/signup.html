@@ -46,19 +46,26 @@
 
         <!-- worker Form -->
         <div id="workerForm" class="form-container" style="display: block;">
-            <form action="{{ url_for('signup.signup_page') }}" method="POST">
+            <form action="{{ url_for('signup.signup_page') }}" method="POST" onsubmit="return validateForm()">
+                <div class="profile-icon">
+                    <img id="profile-pic" src="{{ url_for('static', filename='images/default-pfp.png') }}" alt="Profile Picture">
+                    <input type="file" id="profile-picture" name="profile-picture" class="upload-input" accept="image/*" onchange="showImage(event)">
+                </div>
+                <div id="profile-error" class="error-message" style="display: none;">
+                    Please select a profile picture.
+                </div>
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" class="form-input" required placeholder="Enter your full name">
-
+            
                 <label for="workerPhone">Phone Number:</label>
                 <input type="tel" id="workerPhone" name="phone" class="form-input" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required placeholder="Enter phone number">
-
+            
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" minlength="8" class="form-input" required placeholder="Create a password">
-
+            
                 <label for="password">Re-enter Password:</label>    
                 <input type="password" id="re-password" name="re-password" class="form-input" required placeholder="Re-enter password">
-
+            
                 <button type="submit" class="form-button">Sign Up</button>
             </form>
         </div>
