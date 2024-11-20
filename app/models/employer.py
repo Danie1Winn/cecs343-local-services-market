@@ -6,6 +6,8 @@ class Employer(User):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
+    phone_number = db.Column(db.String(10), unique=True, nullable=False)
+    password = db.Column(db.String(200), nullable=False)
 
     job_postings = db.relationship('JobPosting', back_populates='employer', lazy=True)
 

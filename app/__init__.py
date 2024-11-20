@@ -13,7 +13,8 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
 
-    # Import and register the blueprints
+    from app import models
+
     from app.routes.login_page_routes import login_bp
     from app.routes.signup_page_routes import signup_bp
     from app.routes.home_routes import home_bp

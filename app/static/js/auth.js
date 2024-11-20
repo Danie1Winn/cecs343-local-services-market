@@ -34,6 +34,7 @@ function showImage(event) {
 
 // Validation for Worker form
 function validateWorkerForm(event) {
+    console.log("PFP")
     const profilePicture = document.getElementById("profile-picture");
     const profileError = document.getElementById("profile-error");
     const password = document.getElementById("workerPassword");
@@ -41,7 +42,6 @@ function validateWorkerForm(event) {
     const passwordError = document.getElementById("worker-password-error");
 
     let isValid = true;
-
     // Check if profile picture is uploaded
     if (!profilePicture.files.length) {
         profileError.style.display = "block";
@@ -64,7 +64,6 @@ function validateWorkerForm(event) {
     if (!isValid) {
         event.preventDefault();
     }
-
     return isValid;
 }
 
@@ -72,7 +71,7 @@ function validateWorkerForm(event) {
 function validateEmployerForm(event) {
     const password = document.getElementById("employerPassword");
     const rePassword = document.getElementById("employerRe-Password");
-    const passwordError = document.getElementById("password-error");
+    const passwordError = document.getElementById("employer-password-error");
 
     let isValid = true;
 

@@ -60,7 +60,8 @@ header {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     margin: 0 auto;
-    margin-top: 150px; /* Add space from the top */
+    margin-top: 100px;
+    margin-bottom: 100px;
 }
 
 .login-container h2, .signup-container h2 {
@@ -202,7 +203,8 @@ footer {
     display: none;
     color: #d9534f; /* Bootstrap danger red */
     font-size: 14px;
-    margin-top: 5px;
+    margin-top: 0px;
+    margin-bottom: 8px;
     padding: 8px;
     background-color: #f2dede; /* Light red background */
     border: 1px solid #ebccd1; /* Red border */

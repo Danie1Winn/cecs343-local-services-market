@@ -27,7 +27,7 @@
 
         <!-- employer Form -->
         <div id="employerForm" class="form-container" style="display: none;">
-            <form action="{{ url_for('signup.signup_page') }}" method="POST" onsubmit="return validateEmployerForm()">
+            <form action="{{ url_for('signup.signup_employer') }}" method="POST" onsubmit="return validateEmployerForm(event)">
                 <label for="name">Employer Name:</label>
                 <input type="text" id="name" name="name" class="form-input" required placeholder="Enter your employer name">
 
@@ -40,7 +40,7 @@
                 <label for="employerRe-Password">Re-enter Password:</label>
                 <input type="password" id="employerRe-Password" name="re-password" class="form-input" required placeholder="Re-enter password">
                 
-                <div id="password-error" class="error-message">
+                <div id="employer-password-error" class="error-message" style="display: none;">
                     Please enter the same password.
                 
                 </div>
@@ -50,7 +50,7 @@
 
         <!-- worker Form -->
         <div id="workerForm" class="form-container" style="display: block;">
-            <form action="{{ url_for('signup.signup_page') }}" method="POST" onsubmit="return validateWorkerForm()">
+            <form action="{{ url_for('signup.signup_worker') }}" method="POST" enctype="multipart/form-data" onsubmit="return validateWorkerForm(event)">
                 <div class="profile-icon">
                     <img id="profile-pic" src="{{ url_for('static', filename='images/default-pfp.png') }}" alt="Profile Picture">
                     <input type="file" id="profile-picture" name="profile-picture" class="upload-input" accept="image/*" onchange="showImage(event)">
@@ -70,7 +70,7 @@
                 <label for="workerRe-Password">Re-enter Password:</label>
                 <input type="password" id="workerRe-Password" name="re-password" class="form-input" required placeholder="Re-enter password">
                 
-                <div id="worker-password-error" class="error-message">
+                <div id="worker-password-error" class="error-message" style="display: none;">
                     Please enter the same password.
                 </div>
 

@@ -21,7 +21,7 @@ def worker_page():
 
         flash('Skill successfully added!', 'success')
         return redirect(url_for('worker.worker_page'))
-    
+        
     else:
         print(form.errors)
     
