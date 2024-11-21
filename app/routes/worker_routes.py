@@ -1,6 +1,6 @@
 from flask import Blueprint, flash, url_for, redirect, render_template
 from app import db
-from app.models.skill import Skill
+#from app.models.skill import Skill
 from app.forms import WorkerSkillForm
 
 worker_bp = Blueprint('worker', __name__)

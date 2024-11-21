@@ -25,27 +25,31 @@
             <div id="employerTab" class="tab" onclick="showTab('employer')">Employers</div>
         </div>
 
-        <!-- Employer Login Form -->
-        <form id="employerForm" action="{{ url_for('login.login_page') }}" method="POST">
-            <label for="employerPhone">Phone Number:</label>
-            <input type="tel" id="employerPhone" name="phone" class="form-input" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required placeholder="Enter phone number">
-            
-            <label for="employerPassword">Password:</label>
-            <input type="password" id="employerPassword" name="password" class="form-input" required placeholder="Enter password">
-            
-            <button type="submit" class="form-button">Login</button>
-        </form>
+        <!-- employer Form -->
+        <div id="employerForm" class="form-container" style="display: none;">
+            <form action="{{ url_for('login.login_page') }}" method="POST">
+                <label for="employerPhone">Phone Number:</label>
+                <input type="tel" id="employerPhone" name="phone" class="form-input" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required placeholder="Enter phone number">
+                
+                <label for="employerPassword">Password:</label>
+                <input type="password" id="employerPassword" name="password" class="form-input" required placeholder="Enter password">
+                
+                <button type="submit" class="form-button" name="submit-employer-login">Login</button>
+            </form>
+        </div>
 
-        <!-- Worker Login Form -->
-        <form id="workerForm" action="{{ url_for('login.login_page') }}" method="POST" style="display: none;">
-            <label for="workerPhone">Phone Number:</label>
-            <input type="tel" id="workerPhone" name="phone" class="form-input" required placeholder="Enter phone number">
-            
-            <label for="workerPassword">Password:</label>
-            <input type="password" id="workerPassword" name="password" class="form-input" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required placeholder="Enter password">
-            
-            <button type="submit" class="form-button">Login</button>
-        </form>
+        <!-- worker Form -->
+        <div id="workerForm" class="form-container" style="display: block;">
+            <form action="{{ url_for('login.login_page') }}" method="POST">
+                <label for="workerPhone">Phone Number:</label>
+                <input type="tel" id="workerPhone" name="phone" class="form-input" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required placeholder="Enter phone number">
+                
+                <label for="workerPassword">Password:</label>
+                <input type="password" id="workerPassword" name="password" class="form-input" required placeholder="Enter password">
+                
+                <button type="submit" class="form-button" name="submit-worker-login">Login</button>
+            </form>
+        </div>
 
         <div class="signup-link">
             <p>Don't have an account? <a href="{{ url_for('signup.signup_page') }}">Sign up here</a></p>

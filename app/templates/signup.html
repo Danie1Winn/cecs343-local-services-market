@@ -27,7 +27,7 @@
 
         <!-- employer Form -->
         <div id="employerForm" class="form-container" style="display: none;">
-            <form action="{{ url_for('signup.signup_employer') }}" method="POST" onsubmit="return validateEmployerForm(event)">
+            <form action="{{ url_for('signup.signup_page') }}" method="POST" enctype="multipart/form-data" onsubmit="return validateEmployerForm(event)">
                 <label for="name">Employer Name:</label>
                 <input type="text" id="name" name="name" class="form-input" required placeholder="Enter your employer name">
 
@@ -42,15 +42,15 @@
                 
                 <div id="employer-password-error" class="error-message" style="display: none;">
                     Please enter the same password.
-                
                 </div>
-                <button type="submit" class="form-button">Sign Up</button>
+
+                <button type="submit" class="form-button" name="submit-employer-signup">Sign Up</button>
             </form>
         </div>
-
+        
         <!-- worker Form -->
         <div id="workerForm" class="form-container" style="display: block;">
-            <form action="{{ url_for('signup.signup_worker') }}" method="POST" enctype="multipart/form-data" onsubmit="return validateWorkerForm(event)">
+            <form action="{{ url_for('signup.signup_page') }}" method="POST" enctype="multipart/form-data" onsubmit="return validateWorkerForm(event)">
                 <div class="profile-icon">
                     <img id="profile-pic" src="{{ url_for('static', filename='images/default-pfp.png') }}" alt="Profile Picture">
                     <input type="file" id="profile-picture" name="profile-picture" class="upload-input" accept="image/*" onchange="showImage(event)">
@@ -74,7 +74,7 @@
                     Please enter the same password.
                 </div>
 
-                <button type="submit" class="form-button">Sign Up</button>
+                <button type="submit" class="form-button" name="submit-worker-signup">Sign Up</button>
             </form>
         </div>
 

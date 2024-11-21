@@ -1,3 +1,4 @@
+"""
 from app import db
 
 class Skill(db.Model):
@@ -11,3 +12,4 @@ class Skill(db.Model):
 
     def __repr__(self):
         return f"<Skill {self.name}>"
+"""

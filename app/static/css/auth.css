@@ -97,20 +97,6 @@ header {
 .tab-button:hover:not(.active), .tab:hover:not(.active) {
     background-color: #e0e0e0;
 }
-
-/* Form Containers */
-#employerForm, #workerForm {
-    display: none; /* Hidden by default */
-}
-
-#employerForm {
-    display: block;
-}
-
-#workerForm {
-    display: none;
-}
-
 /* Input Fields */
 .form-input, .form-container input {
     width: 100%;
