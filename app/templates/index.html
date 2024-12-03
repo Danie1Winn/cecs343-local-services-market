@@ -23,10 +23,18 @@
         <section class="hero">
             <h2>Discover Services Near You</h2>
             <p>Your one-stop solution for local services</p>
-            <div class="search-bar">
-                <input type="text" placeholder="Search for services...">
-                <button>Search</button>
-            </div>
+            <form method="GET" action="{{ url_for('home.search') }}" class="search-bar">
+                <input type="text" name="zip_code" placeholder="Enter ZIP code" required>
+                <select name="service_type" required>
+                    <option value="any" selected>Any Service</option>
+                    <option value="plumbing">Plumbing</option>
+                    <option value="electrician">Electrician</option>
+                    <option value="landscaping">Landscaping</option>
+                    <option value="roofing">Roofing</option>
+                    <option value="carpentry">Carpentry</option>
+                </select>
+                <button type="submit">Search</button>
+            </form>            
         </section>
     </main>
 

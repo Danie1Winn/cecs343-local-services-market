@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ worker.name }}'s Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/worker_view.css') }}">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>LocalLink</h1>
+        </div>
+        <nav>
+            <a href="{{ url_for('home.home') }}" class="button">Home</a>
+        </nav>        
+    </header>
+
+    <main>
+        <section class="worker-card">
+            <div class="worker-details">
+                <h2>{{ worker.name }}</h2>
+                <p><strong>Service:</strong> {{ worker.service }}</p>
+                <p><strong>ZIP Code:</strong> {{ worker.zip_code }}</p>
+                <p><strong>Travel Distance:</strong> {{ worker.travel_distance }} miles</p>
+                <p><strong>Phone:</strong> {{ worker.phone_number }}</p>
+            </div>
+
+            <div class="worker-skills">
+                <h2>Skills</h2>
+                {% if skills %}
+                    <ul>
+                        {% for skill in skills %}
+                            <li>{{ skill.skill_name }} - Experience Level: {{ skill.experience_level }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No skills listed yet.</p>
+                {% endif %}
+            </div>
+
+            <div class="contact-worker">
+                <h2>Contact {{ worker.name }}</h2>
+                <form method="POST" action="{{ url_for('worker.contact', worker_id=worker.id) }}">
+                    <div>
+                        <textarea id="message" name="message" rows="5" placeholder="Write your message here..." required></textarea>
+                    </div>
+                    <div>
+                        <button type="submit" class="button">Send Message</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 LocalLink. All rights reserved.</p>
+    </footer>
+</body>
+</html>
