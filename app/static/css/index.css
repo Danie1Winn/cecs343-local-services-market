@@ -101,17 +101,40 @@ main {
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s;
-    margin-left: 50px; /* Shift button more to the right */
 }
 
 .search-bar button:hover {
     background-color: #28a745;
 }
 
+.search-bar select {
+    border: none;
+    outline: none;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 20px;
+    background-color: #f4f4f4;
+    color: #333;
+    width: 180px;
+    margin-right: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    appearance: none;
+}
+
+.search-bar select:hover {
+    background-color: #e6e6e6;
+}
+
+.search-bar select:focus {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    border-color: #28a745;
+}
+
 /* Footer Styling */
 footer {
     text-align: center;
-    padding: 15px;
+    padding: 10px;
     background-color: #333;
     color: white;
     font-size: 14px;

@@ -1,0 +1,145 @@
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #66cc99, #33cc66); /* Full-page green gradient */
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* Header Styling */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: white;
+    padding: 20px 40px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+header .logo h1 {
+    font-size: 28px;
+    letter-spacing: 1px;
+}
+
+header nav a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 15px;
+}
+
+header nav a:hover {
+    text-decoration: underline;
+}
+
+/* Shared Button Styles */
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50; /* Green background */
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 4px;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.button:hover {
+    background-color: #45a049; /* Slightly darker green */
+    transform: translateY(-2px); /* Lift effect */
+}
+
+.button:active {
+    transform: translateY(0); /* Reset on click */
+}
+
+
+/* Search Results Page and Worker View */
+.results, .worker-details {
+    padding: 20px;
+    background-color: #222; /* Dark gray */
+    color: white;
+    border-radius: 10px;
+    max-width: 900px;
+    margin: 40px auto; /* Centers the card */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 80%; /* Increases the card's width */
+    min-height: 200px; /* Ensures it doesn't stretch unnecessarily */
+}
+
+.results h2, .worker-details h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+    color: #fff;
+}
+
+.worker-list, .worker-skills {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.worker-item {
+    background-color: #333;
+    border: 1px solid #444;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    padding: 15px 20px; /* Adjust padding */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.worker-info h3 {
+    margin: 0;
+    font-size: 1.2em;
+    color: #4CAF50;
+}
+
+.worker-info p {
+    margin: 5px 0;
+    font-size: 0.9em;
+    color: #ddd;
+}
+
+.worker-actions .button {
+    padding: 12px 25px; /* Adjust padding for a larger clickable area */
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.9em;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+}
+
+.worker-actions .button:hover {
+    background-color: #45a049;
+}
+
+/* Footer Styling */
+footer {
+    text-align: center;
+    padding: 10px 0;
+    background-color: #333;
+    color: white;
+    font-size: 14px;
+    margin-top: auto;
+}
