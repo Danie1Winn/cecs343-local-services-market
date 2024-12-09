@@ -15,6 +15,7 @@ def login_page():
 
         if worker and check_password_hash(worker.password, password):
             session['worker_id'] = worker.id
+            session['logged_in'] = True
             return redirect(url_for('home.home'))
         else:
             return redirect(url_for('login.login_page'))
@@ -26,7 +27,13 @@ def login_page():
 
         if employer and check_password_hash(employer.password, password):
             session['employer_id'] = employer.id
+            session['logged_in'] = True
             return redirect(url_for('home.home'))
         else:
             return redirect(url_for('login.login_page'))
     return render_template('login.html')
+
+@login_bp.route('/logout')
+def logout():
+    session.clear()  # Clears all session data
+    return redirect(url_for('home.home'))  # Redirect back to the homepage

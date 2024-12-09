@@ -42,6 +42,7 @@ def send_sms_via_email(to_number, carrier, message):
 @signup_bp.route('/signup', methods=['POST', 'GET'])
 def signup_page():
     if request.method == 'POST':
+        session.clear()
         name = request.form['name']
         phone_number = request.form['phone']
         password = request.form['password']
@@ -73,7 +74,7 @@ def signup_page():
             return redirect(url_for('signup.verify_page'))
         else:
             return "Failed to send verification code. Please try again."
-
+    
     return render_template('signup.html')
 
 @signup_bp.route('/verify', methods=['POST', 'GET'])
@@ -99,7 +100,6 @@ def verify_page():
             try:
                 db.session.add(new_user)
                 db.session.commit()
-                session.clear()
                 return redirect(url_for('login.login_page'))
             except Exception as e:
                 return f"Error: {e}"
