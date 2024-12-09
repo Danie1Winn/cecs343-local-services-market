@@ -59,6 +59,7 @@ def signup_page():
             profile_picture_path = os.path.relpath(profile_picture_path, current_app.root_path)
 
         verification_code = f"{random.randint(100000, 999999)}"
+        print(verification_code)
         session['verification_code'] = verification_code
         session['name'] = name
         session['phone_number'] = phone_number
@@ -98,11 +99,8 @@ def verify_page():
             try:
                 db.session.add(new_user)
                 db.session.commit()
+                session.clear()
                 return redirect(url_for('login.login_page'))
             except Exception as e:
                 return f"Error: {e}"
-
-        else:
-            return "Invalid verification code. Please try again."
-
     return render_template('verify.html')
