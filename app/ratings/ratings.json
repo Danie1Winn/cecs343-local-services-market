@@ -1,0 +1,22 @@
+[
+  {
+    "business_name": "Arco",
+    "current_rating": 4,
+    "total_ratings": 3
+  },
+  {
+    "business_name": "Shell",
+    "current_rating": 3.8,
+    "total_ratings": 5
+  },
+  {
+    "business_name": "Oil and Gas Company",
+    "current_rating": 4.1,
+    "total_ratings": 2
+  },
+  {
+    "business_name": "Chevron",
+    "current_rating": 1,
+    "total_ratings": 1
+  }
+]
