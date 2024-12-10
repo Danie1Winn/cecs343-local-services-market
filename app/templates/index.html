@@ -13,15 +13,16 @@
             <h1>LocalLink</h1>
         </div>
         <div class="auth-container">
+            {% if session.get('role') == 'developer' %}
+                <a href="{{ url_for('developer.dashboard') }}" class="auth-button">Developer Dashboard</a>
+            {% endif %}
             {% if session.get('logged_in') %}
-                <!-- Show Logout button if logged in -->
                 <a href="{{ url_for('login.logout') }}" class="auth-button">Logout</a>
             {% else %}
-                <!-- Show Login link if not logged in -->
                 <a href="{{ url_for('login.login_page') }}" class="auth-button">Login</a>
             {% endif %}
         </div>
-    </header>
+    </header>    
 
     <!-- Hero Section with Search Bar -->
     <main>

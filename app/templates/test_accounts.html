@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Test Accounts</title>
+</head>
+<body>
+    <h1>Test Accounts</h1>
+
+    <!-- Worker Accounts -->
+    <h2>Worker Accounts</h2>
+    <ul>
+        {% for worker in workers %}
+            <li>
+                <strong>{{ worker.name }}</strong> ({{ worker.phone_number }})
+                <br>
+                <a href="{{ url_for('worker.worker_profile', worker_id=worker.id) }}">View Profile</a>
+                <form method="POST" action="{{ url_for('developer.remove_account', account_id=worker.id, account_type='worker') }}" style="display:inline;">
+                    <button type="submit">Remove</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Employer Accounts -->
+    <h2>Employer Accounts</h2>
+    <ul>
+        {% for employer in employers %}
+            <li>
+                <strong>{{ employer.name }}</strong> ({{ employer.phone_number }})
+                <br>
+                <form method="POST" action="{{ url_for('developer.remove_account', account_id=employer.id, account_type='employer') }}" style="display:inline;">
+                    <button type="submit">Remove</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Back to Dashboard Link -->
+    <a href="{{ url_for('developer.dashboard') }}">Back to Dashboard</a>
+</body>
+</html>

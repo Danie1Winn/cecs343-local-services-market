@@ -28,7 +28,7 @@
                                 <p>Distance: {{ worker.distance }}</p>
                             </div>
                             <div class="worker-actions">
-                                <a href="{{ url_for('worker.profile', worker_id=worker.id) }}" class="button">View Profile</a>
+                                <a href="{{ url_for('worker.worker_view', worker_id=worker.id) }}" class="button">View Profile</a>
                             </div>
                         </li>
                     {% endfor %}

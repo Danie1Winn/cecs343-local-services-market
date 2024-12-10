@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Test Account</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1>Create Test Account</h1>
+    <form method="POST" action="{{ url_for('developer.create_account') }}">
+        <label for="account_type">Account Type:</label>
+        <select id="account_type" name="account_type" required onchange="toggleWorkerFields(this.value)">
+            <option value="worker">Worker</option>
+            <option value="employer">Employer</option>
+        </select>
+        <br>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <br>
+        <label for="phone_number">Phone Number:</label>
+        <input type="text" id="phone_number" name="phone_number" required>
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <br>
+
+        <!-- Worker-Specific Fields -->
+        <div id="workerFields">
+            <label for="zip_code">ZIP Code:</label>
+            <input type="text" id="zip_code" name="zip_code" placeholder="Enter ZIP Code" value="00000">
+            <br>
+            <label for="travel_distance">Travel Distance:</label>
+            <input type="number" id="travel_distance" name="travel_distance" placeholder="Enter travel distance" value="10">
+            <br>
+        </div>
+
+        <button type="submit">Create</button>
+    </form>
+    <a href="{{ url_for('developer.dashboard') }}">Back to Dashboard</a>
+
+    <script>
+        function toggleWorkerFields(accountType) {
+            const workerFields = document.getElementById('workerFields');
+            if (accountType === 'worker') {
+                workerFields.style.display = 'block';
+            } else {
+                workerFields.style.display = 'none';
+            }
+        }
+
+        // Initialize visibility on page load
+        window.onload = function() {
+            const accountTypeSelect = document.getElementById('account_type');
+            toggleWorkerFields(accountTypeSelect.value);
+        };
+    </script>
+</body>
+</html>

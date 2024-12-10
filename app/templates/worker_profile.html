@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Worker Profile</title>
+    <title>{{ worker.name }}'s Profile</title>
 </head>
 <body>
-    <h1>
-        Worker Profile
-    </h1>
+    <h1>{{ worker.name }}'s Profile</h1>
+    <p>Phone Number: {{ worker.phone_number }}</p>
+    <p>ZIP Code: {{ worker.zip_code }}</p>
+    <p>Travel Distance: {{ worker.travel_distance }} miles</p>
+
     <form method="POST" action="">
         {{ form.hidden_tag() }}
         <div>
@@ -24,9 +26,7 @@
         </div>
     </form>
 
-    <h2>
-        Your Skills
-    </h2>
+    <h2>Your Skills</h2>
     <ul>
         {% for skill in skills %}
         <li>

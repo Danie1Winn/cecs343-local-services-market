@@ -1,15 +1,21 @@
 from app import db
-from app.models.user import User
+from sqlalchemy.orm import relationship
 
-class Worker(User):
-    __tablename__ = 'workers' 
-    
-    id = db.Column(db.Integer, primary_key=True)  # Ensure the ID field is defined
-    profile_picture = db.Column(db.String(200), nullable=True)
-    zip_code = db.Column(db.String(10), nullable=False, default="00000")
-    travel_distance = db.Column(db.Integer, nullable=False, default=10)  # Distance the worker is willing to travel
+class Worker(db.Model):
+    __tablename__ = 'workers'
 
-    # skills = db.relationship('Skill', back_populates='worker')
+    id = db.Column(db.Integer, primary_key=True)
+    profile_picture = db.Column(db.String(200))
+    name = db.Column(db.String(100), nullable=False)
+    phone_number = db.Column(db.String(15), unique=True, nullable=False)
+    password = db.Column(db.String(200), nullable=False)
+    zip_code = db.Column(db.String(10), nullable=False)
+    travel_distance = db.Column(db.Integer, nullable=False)
+    user_role = db.Column(db.String(50), default='regular')  # Added role field
+
+    # Relationships
+    job_postings = relationship('JobPosting', back_populates='worker')
+    contracts = relationship('Contract', back_populates='worker')
 
     def __repr__(self):
         return f"<Worker {self.name}>"

@@ -31,6 +31,7 @@ def create_app():
     from app.routes.home_routes import home_bp
     from app.routes.worker_routes import worker_bp
     from app.routes.employer_routes import employer_bp
+    from app.routes.developer_routes import developer_bp
 
     # Register blueprints with the app
     app.register_blueprint(login_bp)
@@ -38,5 +39,6 @@ def create_app():
     app.register_blueprint(home_bp)
     app.register_blueprint(worker_bp)
     app.register_blueprint(employer_bp)
+    app.register_blueprint(developer_bp, url_prefix='/developer')
 
     return app
