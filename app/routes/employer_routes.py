@@ -47,6 +47,7 @@ def create_request():
     new_contract = Contract(
         worker_id=worker_id,
         employer_id=employer_id,
+        description=description,  # Save the job description
         job_date=job_date,
         status='pending',
     )

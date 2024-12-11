@@ -23,6 +23,7 @@
                 <h2>Online Status</h2>
                 {% if worker.is_online %}
                     <p>Status: <strong>Online</strong></p>
+                    <br/>
                     <form method="POST" action="{{ url_for('worker.go_offline', worker_id=worker.id) }}">
                         <button type="submit" class="button danger">Go Offline</button>
                     </form>
@@ -37,6 +38,77 @@
                     </form>
                 {% endif %}
             </div>
+
+            <!-- Active Jobs Section -->
+            <div class="active-jobs">
+                <h2>Active Jobs</h2>
+                <ul>
+                    {% if active_jobs %}
+                        {% for job in active_jobs %}
+                            <li>
+                                <p><strong>Description:</strong> {{ job.description }}</p>
+                                <p><strong>Scheduled Date:</strong> {{ job.job_date.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                                <br/>
+                                <form method="POST" action="{{ url_for('worker.cancel_active_job', job_id=job.id) }}">
+                                    <button type="submit" class="button danger">Cancel Job</button>
+                                </form>
+                                <br/>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        <p>No active jobs at the moment.</p>
+                    {% endif %}
+                </ul>
+            </div>            
+            
+            <!-- Pending Requests Section -->
+            <div class="job-requests">
+                <h2>Pending Job Requests</h2>
+                <ul>
+                    {% if pending_requests %}
+                        {% for request in pending_requests %}
+                            <li>
+                                <p><strong>Description:</strong> {{ request.job_description }}</p>
+                                <p><strong>Scheduled Date:</strong> {{ request.job_date.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                                <br/>
+                                <form method="POST" action="{{ url_for('worker.accept_job', job_id=request.id) }}">
+                                    <button type="submit" class="button">Accept</button>
+                                </form>
+                                <br/>
+                                <form method="POST" action="{{ url_for('worker.reject_job', job_id=request.id) }}">
+                                    <button type="submit" class="button danger">Reject</button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        <p>No pending job requests.</p>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <!-- Cancellation Requests Section -->
+            <div class="cancellation-requests">
+                <h2>Cancellation Requests</h2>
+                {% if cancel_requests %}
+                    <ul>
+                        {% for job in cancel_requests %}
+                            <li>
+                                <p><strong>{{ job.title }}</strong></p>
+                                <p>{{ job.description }}</p>
+                                <p><em>Rate:</em> ${{ job.rate }}</p>
+                                <p><em>Requested:</em> {{ job.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                                <form method="POST" action="{{ url_for('worker.approve_cancellation', job_id=job.id) }}">
+                                    <button type="submit" class="button">Approve Cancellation</button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No cancellation requests at this time.</p>
+                {% endif %}
+            </div>
+
+            <!-- Worker Info Section -->
             <div class="worker-details">
                 <h2>{{ worker.name }}'s Profile</h2>
                 <p><strong>Phone Number:</strong> {{ worker.phone_number }}</p>
@@ -125,56 +197,6 @@
                     if (rateInput.disabled) rateInput.value = '';
                 }
             </script>
-
-            <!-- Display Job Requests -->
-            <div class="job-requests">
-                <h2>Job Requests</h2>
-                {% if pending_requests %}
-                    <ul>
-                        {% for request in pending_requests %}
-                        <li>
-                            <p><strong>Job Date:</strong> {{ request.job_date.strftime('%Y-%m-%d %H:%M') }}</p>
-                            {% if request.job_posting %}
-                                <p><strong>Description:</strong> {{ request.job_posting.description }}</p>
-                                <p><strong>Rate:</strong> ${{ "{:.2f".format(request.job_posting.rate) }}</p>
-                            {% else %}
-                                <p><em>No job posting details available.</em></p>
-                            {% endif %}
-                            <form method="POST" action="{{ url_for('worker.worker_accept_job', job_id=request.id) }}" style="display: inline;">
-                                <button type="submit" class="button">Accept</button>
-                            </form>
-                            <form method="POST" action="{{ url_for('worker.reject_job', job_id=request.id) }}" style="display: inline;">
-                                <button type="submit" class="button danger">Reject</button>
-                            </form>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <p>No job requests at this time.</p>
-                {% endif %}
-            </div>
-
-            <!-- Display Cancellation Requests -->
-            <div class="cancellation-requests">
-                <h2>Cancellation Requests</h2>
-                {% if cancel_requests %}
-                    <ul>
-                        {% for job in cancel_requests %}
-                            <li>
-                                <p><strong>{{ job.title }}</strong></p>
-                                <p>{{ job.description }}</p>
-                                <p><em>Rate:</em> ${{ job.rate }}</p>
-                                <p><em>Requested:</em> {{ job.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</p>
-                                <form method="POST" action="{{ url_for('worker.approve_cancellation', job_id=job.id) }}">
-                                    <button type="submit" class="button">Approve Cancellation</button>
-                                </form>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <p>No cancellation requests at this time.</p>
-                {% endif %}
-            </div>
         </section>
     </main>
 

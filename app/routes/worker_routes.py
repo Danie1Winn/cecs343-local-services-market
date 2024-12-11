@@ -30,19 +30,19 @@ def worker_view(worker_id):
 
     return render_template('worker_view.html', worker=worker, skills=skills)
 
-@worker_bp.route('/worker_accept_job/<int:job_id>', methods=['POST'])
-def worker_accept_job(job_id):
+@worker_bp.route('/accept_job/<int:job_id>', methods=['POST'])
+def accept_job(job_id):
     contract = Contract.query.get_or_404(job_id)
     worker_id = session.get('worker_id')
 
     if contract.worker_id != worker_id:
         flash("You are not authorized to accept this job.", "danger")
-        return redirect(url_for('worker.worker_view', worker_id=worker_id))
+        return redirect(url_for('worker.worker_profile', worker_id=worker_id))
 
     contract.status = 'accepted'
     db.session.commit()
     flash("Job accepted successfully!", "success")
-    return redirect(url_for('worker.worker_view', worker_id=worker_id))
+    return redirect(url_for('worker.worker_profile', worker_id=worker_id))
 
 @worker_bp.route('/reject_job/<int:job_id>', methods=['POST'])
 def reject_job(job_id):
@@ -51,12 +51,26 @@ def reject_job(job_id):
 
     if contract.worker_id != worker_id:
         flash("You are not authorized to reject this job.", "danger")
-        return redirect(url_for('worker.worker_view', worker_id=worker_id))
+        return redirect(url_for('worker.worker_profile', worker_id=worker_id))
 
     db.session.delete(contract)
     db.session.commit()
     flash("Job rejected successfully!", "success")
-    return redirect(url_for('worker.worker_view', worker_id=worker_id))
+    return redirect(url_for('worker.worker_profile', worker_id=worker_id))
+
+@worker_bp.route('/cancel_active_job/<int:job_id>', methods=['POST'])
+def cancel_active_job(job_id):
+    contract = Contract.query.get_or_404(job_id)
+    worker_id = session.get('worker_id')
+
+    if contract.worker_id != worker_id:
+        flash("You are not authorized to cancel this job.", "danger")
+        return redirect(url_for('worker.worker_profile', worker_id=worker_id))
+
+    contract.status = 'cancel_requested'
+    db.session.commit()
+    flash("Cancellation request sent to the employer.", "success")
+    return redirect(url_for('worker.worker_profile', worker_id=worker_id))
 
 @worker_bp.route('/approve_cancellation/<int:job_id>', methods=['POST'])
 def approve_cancellation(job_id):
@@ -78,7 +92,7 @@ def worker_profile(worker_id):
     worker = Worker.query.get_or_404(worker_id)
 
     if session.get('worker_id') != worker_id:
-        flash("You are not authorized to edit this profile.", "danger")
+        flash("You are not authorized to view this profile.", "danger")
         return redirect(url_for('home.home'))
 
     form = WorkerProfileForm(obj=worker)
@@ -89,30 +103,23 @@ def worker_profile(worker_id):
         worker.travel_distance = form.travel_distance.data
         db.session.commit()
 
-        # Add a new skill if skill fields are filled
-        if form.skill_name.data and form.experience_level.data:
-            new_skill = Skill(
-                skill_name=form.skill_name.data,
-                experience_level=form.experience_level.data,
-                description=form.description.data or "No description provided",
-                rate_type=form.rate_type.data,
-                rate_value=form.rate_value.data if form.rate_type.data != 'negotiable' else None,
-                worker_id=worker_id
-            )
-            db.session.add(new_skill)
-            db.session.commit()
-
-        flash('Profile updated successfully!', 'success')
+        flash("Profile updated successfully!", "success")
         return redirect(url_for('worker.worker_profile', worker_id=worker_id))
 
-    worker_skills = Skill.query.filter_by(worker_id=worker_id).all()
-    pending_requests = Contract.query.filter_by(worker_id=worker_id, status='pending').order_by(Contract.job_date).all()
+    # Fetch pending and active jobs
+    pending_requests = Contract.query.filter_by(worker_id=worker_id, status='pending').all()
+    active_jobs = Contract.query.filter_by(worker_id=worker_id, status='accepted').all()
 
-    return render_template('worker_profile.html', 
-                           worker=worker, 
-                           form=form, 
-                           skills=worker_skills, 
-                           pending_requests=pending_requests)
+    worker_skills = Skill.query.filter_by(worker_id=worker_id).all()
+
+    return render_template(
+        'worker_profile.html',
+        worker=worker,
+        form=form,
+        skills=worker_skills,
+        pending_requests=pending_requests,
+        active_jobs=active_jobs,
+    )
 
 @worker_bp.route('/update_skill/<int:skill_id>', methods=['POST'])
 def update_skill(skill_id):
