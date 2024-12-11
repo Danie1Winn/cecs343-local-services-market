@@ -14,7 +14,63 @@ worker_bp = Blueprint('worker', __name__)
 def worker_view(worker_id):
     worker = Worker.query.get_or_404(worker_id)
     skills = Skill.query.filter_by(worker_id=worker_id).all()
+
+    # Check for employer login
+    employer_id = session.get('employer_id')
+    if employer_id:
+        pending_jobs = Contract.query.filter_by(worker_id=worker_id, status='pending').all()
+        cancel_requests = Contract.query.filter_by(worker_id=worker_id, status='cancel_requested').all()
+        return render_template(
+            'worker_view.html',
+            worker=worker,
+            skills=skills,
+            pending_jobs=pending_jobs,
+            cancel_requests=cancel_requests,
+        )
+
     return render_template('worker_view.html', worker=worker, skills=skills)
+
+@worker_bp.route('/worker_accept_job/<int:job_id>', methods=['POST'])
+def worker_accept_job(job_id):
+    contract = Contract.query.get_or_404(job_id)
+    worker_id = session.get('worker_id')
+
+    if contract.worker_id != worker_id:
+        flash("You are not authorized to accept this job.", "danger")
+        return redirect(url_for('worker.worker_view', worker_id=worker_id))
+
+    contract.status = 'accepted'
+    db.session.commit()
+    flash("Job accepted successfully!", "success")
+    return redirect(url_for('worker.worker_view', worker_id=worker_id))
+
+@worker_bp.route('/reject_job/<int:job_id>', methods=['POST'])
+def reject_job(job_id):
+    contract = Contract.query.get_or_404(job_id)
+    worker_id = session.get('worker_id')
+
+    if contract.worker_id != worker_id:
+        flash("You are not authorized to reject this job.", "danger")
+        return redirect(url_for('worker.worker_view', worker_id=worker_id))
+
+    db.session.delete(contract)
+    db.session.commit()
+    flash("Job rejected successfully!", "success")
+    return redirect(url_for('worker.worker_view', worker_id=worker_id))
+
+@worker_bp.route('/approve_cancellation/<int:job_id>', methods=['POST'])
+def approve_cancellation(job_id):
+    contract = Contract.query.get_or_404(job_id)
+    worker_id = session.get('worker_id')
+
+    if contract.worker_id != worker_id:
+        flash("You are not authorized to approve this cancellation.", "danger")
+        return redirect(url_for('worker.worker_view', worker_id=worker_id))
+
+    contract.status = 'canceled'
+    db.session.commit()
+    flash("Cancellation approved successfully.", "success")
+    return redirect(url_for('worker.worker_view', worker_id=worker_id))
 
 # Worker Profile for Editing
 @worker_bp.route('/profile/<int:worker_id>', methods=['GET', 'POST'])
@@ -87,34 +143,6 @@ def delete_skill(skill_id):
     db.session.commit()
 
     flash("Skill deleted successfully!", "success")
-    return redirect(url_for('worker.worker_profile', worker_id=worker_id))
-
-# Route to accept a job
-@worker_bp.route('/accept_job/<int:job_id>', methods=['POST'])
-def accept_job(job_id):
-    worker_id = session.get('worker_id')
-    if not worker_id:
-        flash("You must be logged in as a worker to accept a job.", "danger")
-        return redirect(url_for('login.login_page'))
-
-    job_posting = JobPosting.query.get_or_404(job_id)
-
-    if job_posting.status != 'open':
-        flash("This job is no longer available.", "danger")
-        return redirect(url_for('worker.worker_profile', worker_id=worker_id))
-
-    job_posting.status = 'accepted'
-    new_contract = Contract(
-        worker_id=worker_id,
-        employer_id=job_posting.employer_id,
-        job_posting_id=job_id,
-        status='accepted',
-    )
-
-    db.session.add(new_contract)
-    db.session.commit()
-
-    flash("Job accepted successfully!", "success")
     return redirect(url_for('worker.worker_profile', worker_id=worker_id))
 
 # Route to contact a worker

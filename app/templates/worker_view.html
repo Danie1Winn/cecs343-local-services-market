@@ -13,9 +13,8 @@
         </div>
         <nav>
             <a href="{{ url_for('home.home') }}" class="button">Home</a>
-        </nav>        
+        </nav>
     </header>
-
     <main>
         <section class="worker-card">
             <div class="worker-details">
@@ -31,28 +30,55 @@
                     <ul>
                         {% for skill in skills %}
                             <li>
-                                <p><strong>{{ skill.skill_name }}</strong></p>
-                                <p>Description: {{ skill.description }}</p>
-                                <p>Experience Level: {{ skill.experience_level }}</p>
-                                <p>Rate Type: {{ skill.rate_type|capitalize }}</p>
-                                {% if skill.rate_type != "negotiable" %}
-                                    <p>Rate Value: ${{ '%.2f'|format(skill.rate_value) }}</p>
+                                <strong>{{ skill.skill_name }}</strong> - Level: {{ skill.experience_level }}
+                                {% if skill.rate_type != 'negotiable' %}
+                                    <br><em>Rate:</em> ${{ "{:.2f".format(skill.rate_value) }}
                                 {% endif %}
+                                <br><em>Rate Type:</em> {{ skill.rate_type.capitalize() }}
                             </li>
                         {% endfor %}
                     </ul>
                 {% else %}
                     <p>No skills listed yet.</p>
                 {% endif %}
-            </div>            
-            
-            <div class="contact-worker">
-                <h2>Contact {{ worker.name }}</h2>
-                <form method="POST" action="{{ url_for('worker.contact', worker_id=worker.id) }}">
-                    <textarea id="message" name="message" rows="5" placeholder="Write your message here..." required></textarea>
-                    <button type="submit" class="button">Send Message</button>
-                </form>                
             </div>
+
+            {% if session.get('employer_id') %}
+            <div class="job-actions">
+                <h2>Job Requests</h2>
+                <ul>
+                    {% for job in pending_jobs %}
+                    <li>
+                        <p><strong>{{ job.title }}</strong></p>
+                        <p>{{ job.description }}</p>
+                        <p><em>Rate:</em> {{ job.rate }}</p>
+                        <p><em>Created:</em> {{ job.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                        <form method="POST" action="{{ url_for('worker.accept_job', job_id=job.id) }}">
+                            <button type="submit" class="button">Accept</button>
+                        </form>
+                        <form method="POST" action="{{ url_for('worker.reject_job', job_id=job.id) }}">
+                            <button type="submit" class="button danger">Reject</button>
+                        </form>
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                <h2>Cancellation Requests</h2>
+                <ul>
+                    {% for job in cancel_requests %}
+                    <li>
+                        <p><strong>{{ job.title }}</strong></p>
+                        <p>{{ job.description }}</p>
+                        <p><em>Rate:</em> {{ job.rate }}</p>
+                        <p><em>Created:</em> {{ job.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                        <form method="POST" action="{{ url_for('worker.approve_cancellation', job_id=job.id) }}">
+                            <button type="submit" class="button">Approve Cancellation</button>
+                        </form>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
         </section>
     </main>
 

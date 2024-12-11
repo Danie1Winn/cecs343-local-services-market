@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employer Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/employer_profile.css') }}">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>LocalLink</h1>
+        </div>
+        <nav>
+            <a href="{{ url_for('home.home') }}" class="button">Home</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="dashboard">
+            <h2>Employer Dashboard</h2>
+
+            <!-- Pending Job Requests -->
+            <div class="job-section">
+                <h3>Pending Job Requests</h3>
+                {% if pending_jobs %}
+                    <ul>
+                        {% for job in pending_jobs %}
+                            <li>
+                                <strong>Worker:</strong> {{ job.worker.name }}<br>
+                                <strong>Rate:</strong> {{ job.rate_type.capitalize() }} 
+                                {% if job.rate_type != 'negotiable' %}
+                                    ${{ "{:.2f".format(job.rate_value) }}
+                                {% else %}
+                                    Agreed upon later
+                                {% endif %}
+                                <br>
+                                <strong>Date/Time:</strong> {{ job.created_at.strftime('%Y-%m-%d %H:%M') }}<br>
+                                <form method="POST" action="{{ url_for('employer.cancel_request', job_id=job.id) }}">
+                                    <button type="submit" class="button danger">Cancel Request</button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No pending requests.</p>
+                {% endif %}
+            </div>
+
+            <!-- Active Jobs -->
+            <div class="job-section">
+                <h3>Active Jobs</h3>
+                {% if active_jobs %}
+                    <ul>
+                        {% for job in active_jobs %}
+                            <li>
+                                <strong>Worker:</strong> {{ job.worker.name }}<br>
+                                <strong>Rate:</strong> {{ job.rate_type.capitalize() }} 
+                                {% if job.rate_type != 'negotiable' %}
+                                    ${{ "{:.2f".format(job.rate_value) }}
+                                {% else %}
+                                    Agreed upon later
+                                {% endif %}
+                                <br>
+                                <strong>Date/Time:</strong> {{ job.created_at.strftime('%Y-%m-%d %H:%M') }}<br>
+                                <form method="POST" action="{{ url_for('employer.request_cancellation', job_id=job.id) }}">
+                                    <button type="submit" class="button warning">Request Cancellation</button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No active jobs.</p>
+                {% endif %}
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 LocalLink. All rights reserved.</p>
+    </footer>
+</body>
+</html>
