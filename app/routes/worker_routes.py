@@ -20,7 +20,6 @@ def worker_view(worker_id):
 def worker_profile(worker_id):
     worker = Worker.query.get_or_404(worker_id)
 
-    # Ensure logged-in worker matches the profile being edited
     if session.get('worker_id') != worker_id:
         flash("You are not authorized to edit this profile.", "danger")
         return redirect(url_for('home.home'))
@@ -28,7 +27,6 @@ def worker_profile(worker_id):
     form = WorkerProfileForm(obj=worker)
 
     if form.validate_on_submit():
-        # Update profile fields
         worker.about_me = form.about_me.data
         worker.zip_code = form.zip_code.data
         worker.travel_distance = form.travel_distance.data
@@ -39,21 +37,23 @@ def worker_profile(worker_id):
             new_skill = Skill(
                 skill_name=form.skill_name.data,
                 experience_level=form.experience_level.data,
+                description=form.description.data or "No description provided",
+                rate_type=form.rate_type.data,
+                rate_value=form.rate_value.data if form.rate_type.data != 'negotiable' else None,
                 worker_id=worker_id
             )
             db.session.add(new_skill)
             db.session.commit()
 
+
         flash('Profile updated successfully!', 'success')
         return redirect(url_for('worker.worker_profile', worker_id=worker_id))
 
-    # Fetch skills and job requests for the profile
     worker_skills = Skill.query.filter_by(worker_id=worker_id).all()
     job_requests = JobPosting.query.filter_by(worker_id=worker_id, status='open').all()
 
     return render_template('worker_profile.html', worker=worker, form=form, skills=worker_skills, job_requests=job_requests)
 
-# Route to update a skill
 @worker_bp.route('/update_skill/<int:skill_id>', methods=['POST'])
 def update_skill(skill_id):
     skill = Skill.query.get_or_404(skill_id)
@@ -65,7 +65,11 @@ def update_skill(skill_id):
 
     skill.skill_name = request.form.get('skill_name')
     skill.experience_level = request.form.get('experience_level')
+    skill.description = request.form.get('description')
+    skill.rate_type = request.form.get('rate_type')
+    skill.rate_value = None if skill.rate_type == 'negotiable' else request.form.get('rate_value')
     db.session.commit()
+
 
     flash("Skill updated successfully!", "success")
     return redirect(url_for('worker.worker_profile', worker_id=worker_id))

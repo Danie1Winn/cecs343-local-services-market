@@ -44,6 +44,18 @@
                         {{ form.experience_level.label }}
                         {{ form.experience_level() }}
                     </div>
+                    <div>
+                        {{ form.description.label }}
+                        {{ form.description() }}
+                    </div>
+                    <div>
+                        {{ form.rate_type.label }}
+                        {{ form.rate_type() }}
+                    </div>
+                    <div>
+                        {{ form.rate_value.label }}
+                        {{ form.rate_value() }}
+                    </div>
                     <button type="submit" class="button">Save Changes</button>
                 </form>
             </div>
@@ -57,6 +69,25 @@
                         <form method="POST" action="{{ url_for('worker.update_skill', skill_id=skill.id) }}" style="display: flex; gap: 10px;">
                             <input type="text" name="skill_name" value="{{ skill.skill_name }}" required>
                             <input type="number" name="experience_level" value="{{ skill.experience_level }}" min="1" max="5" required>
+                            <textarea name="description">{{ skill.description }}</textarea>
+                            <select name="rate_type" onchange="toggleRateValue(this, {{ skill.id }})">
+                                <option value="fixed" {% if skill.rate_type == "fixed" %}selected{% endif %}>Fixed</option>
+                                <option value="hourly" {% if skill.rate_type == "hourly" %}selected{% endif %}>Hourly</option>
+                                <option value="negotiable" {% if skill.rate_type == "negotiable" %}selected{% endif %}>Negotiable</option>
+                            </select>
+                            <input type="number" name="rate_value" value="{{ skill.rate_value if skill.rate_value is not none else '' }}" step="0.01" {% if skill.rate_type == "negotiable" %}disabled{% endif %}>
+                                                      
+                            <script>
+                                function toggleRateValue(select, skillId = null) {
+                                    const rateInput = skillId
+                                        ? document.getElementById(`rate_value_${skillId}`)
+                                        : document.getElementById('rate_value');
+                                    rateInput.disabled = select.value === 'negotiable';
+                                    if (rateInput.disabled) {
+                                        rateInput.value = '';
+                                    }
+                                }
+                            </script>                            
                             <button type="submit" class="button">Update</button>
                         </form>
                         <form method="POST" action="{{ url_for('worker.delete_skill', skill_id=skill.id) }}" style="display: inline;">
@@ -66,6 +97,15 @@
                     {% endfor %}
                 </ul>
             </div>
+
+            <script>
+                function toggleRateValue(select, skillId) {
+                    const rateInput = document.getElementById(`rate_value_${skillId}`);
+                    rateInput.disabled = select.value === 'negotiable';
+                    if (rateInput.disabled) rateInput.value = '';
+                }
+            </script>
+
 
             <!-- Display Job Requests -->
             <div class="job-requests">

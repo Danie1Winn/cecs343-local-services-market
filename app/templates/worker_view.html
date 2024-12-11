@@ -30,14 +30,22 @@
                 {% if skills %}
                     <ul>
                         {% for skill in skills %}
-                            <li>{{ skill.skill_name }} - Experience Level: {{ skill.experience_level }}</li>
+                            <li>
+                                <p><strong>{{ skill.skill_name }}</strong></p>
+                                <p>Description: {{ skill.description }}</p>
+                                <p>Experience Level: {{ skill.experience_level }}</p>
+                                <p>Rate Type: {{ skill.rate_type|capitalize }}</p>
+                                {% if skill.rate_type != "negotiable" %}
+                                    <p>Rate Value: ${{ '%.2f'|format(skill.rate_value) }}</p>
+                                {% endif %}
+                            </li>
                         {% endfor %}
                     </ul>
                 {% else %}
                     <p>No skills listed yet.</p>
                 {% endif %}
-            </div>
-
+            </div>            
+            
             <div class="contact-worker">
                 <h2>Contact {{ worker.name }}</h2>
                 <form method="POST" action="{{ url_for('worker.contact', worker_id=worker.id) }}">
