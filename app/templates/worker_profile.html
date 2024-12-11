@@ -129,28 +129,24 @@
                         {{ form.travel_distance.label }}
                         {{ form.travel_distance() }}
                     </div>
-                    <div>
-                        {{ form.skill_name.label }}
-                        {{ form.skill_name() }}
-                    </div>
-                    <div>
-                        {{ form.experience_level.label }}
-                        {{ form.experience_level() }}
-                    </div>
-                    <div>
-                        {{ form.description.label }}
-                        {{ form.description() }}
-                    </div>
-                    <div>
-                        {{ form.rate_type.label }}
-                        {{ form.rate_type() }}
-                    </div>
-                    <br/>
-                    <div>
-                        {{ form.rate_value.label }}
-                        {{ form.rate_value() }}
-                    </div>
                     <button type="submit" class="button">Save Changes</button>
+                </form>
+            </div>
+
+            <!-- Add New Skill -->
+            <div class="add-skill">
+                <h2>Add New Skill</h2>
+                <form method="POST" action="{{ url_for('worker.add_skill', worker_id=worker.id) }}">
+                    <input type="text" name="skill_name" placeholder="Skill Name" required>
+                    <input type="number" name="experience_level" placeholder="Experience Level (1-5)" min="1" max="5" required>
+                    <textarea name="description" placeholder="Skill Description"></textarea>
+                    <select name="rate_type" required>
+                        <option value="fixed">Fixed</option>
+                        <option value="hourly">Hourly</option>
+                        <option value="negotiable">Negotiable</option>
+                    </select>
+                    <input type="number" name="rate_value" placeholder="Rate Value" step="0.01">
+                    <button type="submit" class="button">Add Skill</button>
                 </form>
             </div>
 

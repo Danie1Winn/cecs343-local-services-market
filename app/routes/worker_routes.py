@@ -123,6 +123,40 @@ def worker_profile(worker_id):
         cancel_requests=cancel_requests,
     )
 
+@worker_bp.route('/add_skill/<int:worker_id>', methods=['POST'])
+def add_skill(worker_id):
+    worker = Worker.query.get_or_404(worker_id)
+    
+    if session.get('worker_id') != worker_id:
+        flash("You are not authorized to add a skill to this profile.", "danger")
+        return redirect(url_for('worker.worker_profile', worker_id=worker_id))
+
+    try:
+        skill_name = request.form.get('skill_name')
+        experience_level = int(request.form.get('experience_level'))
+        description = request.form.get('description', "No description provided")
+        rate_type = request.form.get('rate_type')
+        rate_value = None if rate_type == 'negotiable' else float(request.form.get('rate_value', 0))
+
+        new_skill = Skill(
+            skill_name=skill_name,
+            experience_level=experience_level,
+            description=description,
+            rate_type=rate_type,
+            rate_value=rate_value,
+            worker_id=worker_id
+        )
+
+        db.session.add(new_skill)
+        db.session.commit()
+        flash("New skill added successfully!", "success")
+    except Exception as e:
+        db.session.rollback()
+        flash(f"Error adding skill: {e}", "danger")
+
+    return redirect(url_for('worker.worker_profile', worker_id=worker_id))
+
+
 @worker_bp.route('/update_skill/<int:skill_id>', methods=['POST'])
 def update_skill(skill_id):
     skill = Skill.query.get_or_404(skill_id)

@@ -83,7 +83,8 @@ main {
 .worker-skills h2,
 .job-requests h2,
 .active-jobs h2,
-.worker-online-status h2 {
+.worker-online-status h2,
+.add-skill h2 {
     color: #4CAF50;
     font-size: 1.5em;
     margin-bottom: 15px;
