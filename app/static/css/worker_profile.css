@@ -131,6 +131,10 @@ input:focus {
     color: #ddd;
 }
 
+.worker-skills button {
+    margin-right: 10px;
+}
+
 /* Button inline layout for actions */
 .job-requests li form,
 .active-jobs li form {
