@@ -49,8 +49,9 @@ def create_app():
     return app
 
 def init_scheduler(app):
-    """Initializes the APScheduler for auto-offline feature."""
-    from app.models.worker import Worker  # Import Worker model here
+    """Initializes the APScheduler for auto-offline feature and job expiration."""
+    from app.models.worker import Worker  # Import Worker model
+    from app.models.contract import Contract  # Import Contract model
     from app import db
 
     def check_auto_offline():
@@ -63,6 +64,16 @@ def init_scheduler(app):
                 worker.auto_offline_time = None
             db.session.commit()
 
+    def expire_jobs():
+        """Mark jobs as expired if their scheduled date has passed."""
+        with app.app_context():
+            now = datetime.utcnow()
+            expired_jobs = Contract.query.filter(Contract.status == 'pending', Contract.job_date <= now).all()
+            for job in expired_jobs:
+                job.status = 'expired'
+            db.session.commit()
+
     scheduler = BackgroundScheduler()
-    scheduler.add_job(check_auto_offline, 'interval', minutes=1)  # Runs every 1 minute
+    scheduler.add_job(check_auto_offline, 'interval', minutes=1)  # Runs every 1 minute for auto-offline
+    scheduler.add_job(expire_jobs, 'interval', minutes=1)  # Runs every 1 minute for job expiration
     scheduler.start()

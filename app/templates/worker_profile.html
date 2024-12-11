@@ -143,6 +143,27 @@
                     {% endfor %}
                 </ul>
             </div>
+            <!-- Display Cancellation Requests -->
+            <div class="cancellation-requests">
+                <h2>Cancellation Requests</h2>
+                {% if cancel_requests %}
+                    <ul>
+                        {% for job in cancel_requests %}
+                            <li>
+                                <p><strong>{{ job.title }}</strong></p>
+                                <p>{{ job.description }}</p>
+                                <p><em>Rate:</em> ${{ job.rate }}</p>
+                                <p><em>Requested:</em> {{ job.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                                <form method="POST" action="{{ url_for('worker.approve_cancellation', job_id=job.id) }}">
+                                    <button type="submit" class="button">Approve Cancellation</button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No cancellation requests at this time.</p>
+                {% endif %}
+            </div>
         </section>
     </main>
 

@@ -32,7 +32,7 @@
                             <li>
                                 <strong>{{ skill.skill_name }}</strong> - Level: {{ skill.experience_level }}
                                 {% if skill.rate_type != 'negotiable' %}
-                                    <br><em>Rate:</em> ${{ "{:.2f".format(skill.rate_value) }}
+                                    <br><em>Rate:</em> ${{ "{:.2f}".format(skill.rate_value|default(0)) }}
                                 {% endif %}
                                 <br><em>Rate Type:</em> {{ skill.rate_type.capitalize() }}
                             </li>
@@ -45,43 +45,23 @@
 
             {% if session.get('employer_id') %}
             <div class="job-actions">
-                <h2>Job Requests</h2>
-                <ul>
-                    {% for job in pending_jobs %}
-                    <li>
-                        <p><strong>{{ job.title }}</strong></p>
-                        <p>{{ job.description }}</p>
-                        <p><em>Rate:</em> {{ job.rate }}</p>
-                        <p><em>Created:</em> {{ job.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</p>
-                        <form method="POST" action="{{ url_for('worker.accept_job', job_id=job.id) }}">
-                            <button type="submit" class="button">Accept</button>
-                        </form>
-                        <form method="POST" action="{{ url_for('worker.reject_job', job_id=job.id) }}">
-                            <button type="submit" class="button danger">Reject</button>
-                        </form>
-                    </li>
-                    {% endfor %}
-                </ul>
-
-                <h2>Cancellation Requests</h2>
-                <ul>
-                    {% for job in cancel_requests %}
-                    <li>
-                        <p><strong>{{ job.title }}</strong></p>
-                        <p>{{ job.description }}</p>
-                        <p><em>Rate:</em> {{ job.rate }}</p>
-                        <p><em>Created:</em> {{ job.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</p>
-                        <form method="POST" action="{{ url_for('worker.approve_cancellation', job_id=job.id) }}">
-                            <button type="submit" class="button">Approve Cancellation</button>
-                        </form>
-                    </li>
-                    {% endfor %}
-                </ul>
+                <h2>Submit Job Request</h2>
+                <form method="POST" action="{{ url_for('employer.create_request') }}">
+                    <input type="hidden" name="worker_id" value="{{ worker.id }}">
+                    <div>
+                        <label for="description">Job Description:</label>
+                        <textarea name="description" required></textarea>
+                    </div>
+                    <div>
+                        <label for="job_date">Job Date and Time:</label>
+                        <input type="datetime-local" name="job_date" required>
+                    </div>
+                    <button type="submit" class="button">Send Job Request</button>
+                </form>                              
             </div>
             {% endif %}
         </section>
     </main>
-
     <footer>
         <p>&copy; 2024 LocalLink. All rights reserved.</p>
     </footer>
