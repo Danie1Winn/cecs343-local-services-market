@@ -5,6 +5,7 @@ from app.models.skill import Skill
 from app.models.job_posting import JobPosting
 from app.models.contract import Contract
 from app.forms import WorkerProfileForm
+from datetime import datetime, timedelta
 
 worker_bp = Blueprint('worker', __name__)
 
@@ -128,3 +129,40 @@ def contact(worker_id):
 
     flash(f"Your message has been sent to {worker.name}.", "success")
     return redirect(url_for('worker.worker_view', worker_id=worker_id))
+
+# Route to go online
+@worker_bp.route('/go_online/<int:worker_id>', methods=['POST'])
+def go_online(worker_id):
+    worker = Worker.query.get_or_404(worker_id)
+
+    if session.get('worker_id') != worker_id:
+        flash("You are not authorized to change this status.", "danger")
+        return redirect(url_for('home.home'))
+
+    auto_offline_minutes = request.form.get('auto_offline_time')
+    if auto_offline_minutes:
+        worker.auto_offline_time = datetime.utcnow() + timedelta(minutes=int(auto_offline_minutes))
+    else:
+        worker.auto_offline_time = None  # Manual offline
+
+    worker.is_online = True
+    db.session.commit()
+
+    flash("You are now online!", "success")
+    return redirect(url_for('worker.worker_profile', worker_id=worker_id))
+
+# Route to go offline
+@worker_bp.route('/go_offline/<int:worker_id>', methods=['POST'])
+def go_offline(worker_id):
+    worker = Worker.query.get_or_404(worker_id)
+
+    if session.get('worker_id') != worker_id:
+        flash("You are not authorized to change this status.", "danger")
+        return redirect(url_for('home.home'))
+
+    worker.is_online = False
+    worker.auto_offline_time = None  # Reset auto-offline time
+    db.session.commit()
+
+    flash("You are now offline.", "success")
+    return redirect(url_for('worker.worker_profile', worker_id=worker_id))

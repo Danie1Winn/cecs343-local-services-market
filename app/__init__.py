@@ -1,6 +1,8 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from apscheduler.schedulers.background import BackgroundScheduler
+from datetime import datetime
 import os
 import subprocess
 
@@ -41,4 +43,26 @@ def create_app():
     app.register_blueprint(employer_bp)
     app.register_blueprint(developer_bp, url_prefix='/developer')
 
+    # Initialize and start the scheduler
+    init_scheduler(app)
+
     return app
+
+def init_scheduler(app):
+    """Initializes the APScheduler for auto-offline feature."""
+    from app.models.worker import Worker  # Import Worker model here
+    from app import db
+
+    def check_auto_offline():
+        """Check and update workers who should go offline."""
+        with app.app_context():  # Ensure app context is available
+            now = datetime.utcnow()
+            workers = Worker.query.filter(Worker.is_online == True, Worker.auto_offline_time <= now).all()
+            for worker in workers:
+                worker.is_online = False
+                worker.auto_offline_time = None
+            db.session.commit()
+
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(check_auto_offline, 'interval', minutes=1)  # Runs every 1 minute
+    scheduler.start()

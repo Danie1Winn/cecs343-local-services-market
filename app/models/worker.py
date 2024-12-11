@@ -1,6 +1,7 @@
 from app import db
 from sqlalchemy.orm import relationship
 from app.models.skill import Skill
+from datetime import datetime
 
 class Worker(db.Model):
     __tablename__ = 'workers'
@@ -14,6 +15,8 @@ class Worker(db.Model):
     travel_distance = db.Column(db.Integer, nullable=False)
     user_role = db.Column(db.String(50), default='regular')
     about_me = db.Column(db.Text, nullable=True)
+    is_online = db.Column(db.Boolean, default=False)
+    auto_offline_time = db.Column(db.DateTime, nullable=True)
 
     # Relationships
     job_postings = db.relationship('JobPosting', back_populates='worker')

@@ -18,10 +18,29 @@
 
     <main>
         <section class="profile-card">
+            <!-- Allows Worker to Go Online / Offline -->
+            <div class="worker-online-status">
+                <h2>Online Status</h2>
+                {% if worker.is_online %}
+                    <p>Status: <strong>Online</strong></p>
+                    <form method="POST" action="{{ url_for('worker.go_offline', worker_id=worker.id) }}">
+                        <button type="submit" class="button danger">Go Offline</button>
+                    </form>
+                {% else %}
+                    <p>Status: <strong>Offline</strong></p>
+                    <form method="POST" action="{{ url_for('worker.go_online', worker_id=worker.id) }}">
+                        <div>
+                            <label for="auto_offline_time">Go Offline After (minutes):</label>
+                            <input type="number" name="auto_offline_time" min="1" placeholder="Leave blank for manual">
+                        </div>
+                        <button type="submit" class="button">Go Online</button>
+                    </form>
+                {% endif %}
+            </div>
             <div class="worker-details">
                 <h2>{{ worker.name }}'s Profile</h2>
                 <p><strong>Phone Number:</strong> {{ worker.phone_number }}</p>
-
+                <br/>
                 <form method="POST" action="">
                     {{ form.hidden_tag() }}
                     <div>
@@ -52,6 +71,7 @@
                         {{ form.rate_type.label }}
                         {{ form.rate_type() }}
                     </div>
+                    <br/>
                     <div>
                         {{ form.rate_value.label }}
                         {{ form.rate_value() }}

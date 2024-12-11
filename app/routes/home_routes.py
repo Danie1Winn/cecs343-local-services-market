@@ -52,7 +52,7 @@ def search():
     skill_names = [skill.skill_name for skill in all_skills]
 
     # Fetch workers from the database with skills eagerly loaded
-    workers = Worker.query.options(joinedload(Worker.skills)).all()
+    workers = Worker.query.filter_by(is_online=True).all()
 
     # Filter results
     results = []
