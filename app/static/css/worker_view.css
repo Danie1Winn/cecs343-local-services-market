@@ -31,6 +31,7 @@ header .logo h1 {
 }
 
 header nav a {
+    display: flex;
     color: #fff;
     text-decoration: none;
     margin-left: 15px;

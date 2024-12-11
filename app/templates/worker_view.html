@@ -12,8 +12,9 @@
             <h1>LocalLink</h1>
         </div>
         <nav>
+            <a href="{{ url_for('home.search', zip_code=request.args.get('zip_code'), service_type=request.args.get('service_type')) }}" class="button">Return to Search</a>
             <a href="{{ url_for('home.home') }}" class="button">Home</a>
-        </nav>
+        </nav>        
     </header>
     <main>
         <section class="worker-card">
@@ -21,7 +22,6 @@
                 <h2>{{ worker.name }}</h2>
                 <p><strong>ZIP Code:</strong> {{ worker.zip_code }}</p>
                 <p><strong>Travel Distance:</strong> {{ worker.travel_distance }} miles</p>
-                <p><strong>Phone:</strong> {{ worker.phone_number }}</p>
             </div>
 
             <div class="worker-skills">

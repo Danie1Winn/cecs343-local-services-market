@@ -32,20 +32,26 @@ header .logo h1 {
 }
 
 header nav a {
-    color: #fff;
+    font-weight: bold;
     text-decoration: none;
     margin-left: 15px;
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #4CAF50;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
 
 header nav a:hover {
     text-decoration: underline;
+    background-color: #45a049;
 }
 
 /* Shared Button Styles */
 .button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #4CAF50; /* Green background */
+    background-color: #4CAF50;
     color: white;
     text-decoration: none;
     font-size: 14px;
@@ -58,18 +64,18 @@ header nav a:hover {
 }
 
 .button:hover {
-    background-color: #45a049; /* Slightly darker green */
-    transform: translateY(-2px); /* Lift effect */
+    background-color: #45a049;
+    transform: translateY(-2px); 
 }
 
 .button:active {
-    transform: translateY(0); /* Reset on click */
+    transform: translateY(0); 
 }
 
 /* Search Results */
 .results {
     padding: 20px;
-    background-color: #222; /* Dark gray */
+    background-color: #222; 
     color: white;
     border-radius: 10px;
     max-width: 900px;

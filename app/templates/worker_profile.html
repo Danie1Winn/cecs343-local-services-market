@@ -61,15 +61,22 @@
                 </ul>
             </div>            
             
-            <!-- Pending Requests Section -->
+            <!-- Pending Job Requests Section -->
             <div class="job-requests">
                 <h2>Pending Job Requests</h2>
                 <ul>
                     {% if pending_requests %}
                         {% for request in pending_requests %}
                             <li>
+                                <p>
+                                    <strong>Worker:</strong> 
+                                    <a href="{{ url_for('worker.worker_view', worker_id=request.worker.id) }}">
+                                        {{ request.worker.name }}
+                                    </a>
+                                </p>
                                 <p><strong>Description:</strong> {{ request.description }}</p>
                                 <p><strong>Scheduled Date:</strong> {{ request.job_date.strftime('%Y-%m-%d %H:%M:%S') if request.job_date else "N/A" }}</p>
+                                <br/>
                                 <form method="POST" action="{{ url_for('worker.accept_job', job_id=request.id) }}">
                                     <button type="submit" class="button">Accept</button>
                                 </form>
@@ -82,7 +89,7 @@
                         <p>No pending job requests.</p>
                     {% endif %}
                 </ul>
-            </div>            
+            </div>       
 
             <!-- Cancellation Requests Section -->
             <div class="cancellation-requests">

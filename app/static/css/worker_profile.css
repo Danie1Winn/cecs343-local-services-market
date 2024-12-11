@@ -31,13 +31,19 @@ header .logo h1 {
 }
 
 header nav a {
-    color: #fff;
+    font-weight: bold;
     text-decoration: none;
     margin-left: 15px;
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #4CAF50;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
 
 header nav a:hover {
     text-decoration: underline;
+    background-color: #45a049;
 }
 
 main {
@@ -62,20 +68,36 @@ main {
     gap: 30px;
 }
 
-.worker-details, .worker-skills, .job-requests {
+/* Updated background styling for all sections */
+.worker-online-status,
+.active-jobs,
+.cancellation-requests,
+.job-requests {
     padding: 20px;
-    background-color: #333;
+    background-color: #333; /* Consistent light gray card */
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.worker-details h2, .worker-skills h2, .job-requests h2 {
+.worker-details h2,
+.worker-skills h2,
+.job-requests h2,
+.active-jobs h2,
+.worker-online-status h2 {
     color: #4CAF50;
     font-size: 1.5em;
     margin-bottom: 15px;
 }
 
-textarea, input[type="text"], input[type="number"] {
+.active-jobs ul,
+.job-requests ul {
+    list-style: none;
+}
+
+/* Input and textarea styles */
+textarea,
+input[type="text"],
+input[type="number"] {
     width: 100%;
     padding: 10px;
     border: 1px solid #444;
@@ -86,14 +108,15 @@ textarea, input[type="text"], input[type="number"] {
     margin-bottom: 15px;
 }
 
-textarea:focus, input:focus {
+textarea:focus,
+input:focus {
     outline: none;
     border-color: #4CAF50;
 }
 
 /* Skills List */
 .worker-skills ul {
-    list-style: none;
+    list-style: none; /* Remove bullet points */
     padding: 0;
 }
 
@@ -106,6 +129,13 @@ textarea:focus, input:focus {
     padding: 10px;
     border-radius: 5px;
     color: #ddd;
+}
+
+/* Button inline layout for actions */
+.job-requests li form,
+.active-jobs li form {
+    display: inline-block;
+    margin-right: 10px;
 }
 
 .worker-skills ul li form {
@@ -151,6 +181,17 @@ textarea:focus, input:focus {
 
 .button.danger:hover {
     background-color: #c0392b;
+}
+
+/* Online/Offline text styling */
+.status-online {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+.status-offline {
+    color: #e74c3c;
+    font-weight: bold;
 }
 
 footer {

@@ -31,13 +31,19 @@ header .logo h1 {
 }
 
 header nav a {
-    color: #fff;
+    font-weight: bold;
     text-decoration: none;
     margin-left: 15px;
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #4CAF50;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
 
 header nav a:hover {
     text-decoration: underline;
+    background-color: #45a049;
 }
 
 main {
