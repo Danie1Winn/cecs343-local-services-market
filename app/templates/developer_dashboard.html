@@ -4,12 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Developer Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/developer_dashboard.css') }}">
 </head>
 <body>
-    <h1>Developer Dashboard</h1>
-    <a href="{{ url_for('developer.create_account') }}">Create Test Account</a>
-    <a href="{{ url_for('developer.view_test_accounts') }}">View Test Accounts</a>
-    <br>
-    <a href="{{ url_for('home.home') }}">Back to Homepage</a>
+    <header>
+        <div class="logo">
+            <h1>Developer Dashboard</h1>
+        </div>
+    </header>
+    <main>
+        <section class="dashboard-links">
+            <a href="{{ url_for('developer.create_account') }}" class="button">Create Test Account</a>
+            <a href="{{ url_for('developer.view_test_accounts') }}" class="button">View Test Accounts</a>
+            <a href="{{ url_for('home.home') }}" class="button">Back to Homepage</a>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 LocalLink. All rights reserved.</p>
+    </footer>
 </body>
 </html>

@@ -8,15 +8,15 @@ developer_bp = Blueprint('developer', __name__, url_prefix='/developer')
 
 @developer_bp.route('/dashboard')
 def dashboard():
-    if session.get('role') != 'developer':
+    if session.get('role') not in ['developer', 'developer_worker', 'developer_employer']:
         abort(403)  # Access forbidden for non-developers
     return render_template('developer_dashboard.html')
 
 @developer_bp.route('/create_account', methods=['GET', 'POST'])
 def create_account():
-    if session.get('role') != 'developer':
-        abort(403)
-    
+    if session.get('role') not in ['developer', 'developer_worker', 'developer_employer']:
+        abort(403)  # Access forbidden for non-developers
+
     if request.method == 'POST':
         account_type = request.form['account_type']
         name = request.form['name']
@@ -56,8 +56,8 @@ def create_account():
 
 @developer_bp.route('/test_accounts')
 def view_test_accounts():
-    if session.get('role') != 'developer':
-        abort(403)
+    if session.get('role') not in ['developer', 'developer_worker', 'developer_employer']:
+        abort(403)  # Access forbidden for non-developers
 
     workers = Worker.query.filter_by(user_role='developer').all()
     employers = Employer.query.filter_by(user_role='developer').all()

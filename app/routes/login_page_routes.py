@@ -24,9 +24,9 @@ def login_page():
             if worker and check_password_hash(worker.password, password):
                 if worker.user_role == 'developer':
                     session['developer_id'] = worker.id
-                    session['role'] = 'developer'
-                    session['logged_in'] = True  # Allow access to the navbar options
-                    flash('Developer login successful.', 'success')
+                    session['role'] = 'developer_worker'
+                    session['logged_in'] = True
+                    flash('Developer worker login successful.', 'success')
                     return redirect(url_for('home.home'))  # Redirect to homepage
                 else:
                     session['worker_id'] = worker.id
@@ -47,9 +47,10 @@ def login_page():
             if employer and check_password_hash(employer.password, password):
                 if employer.user_role == 'developer':
                     session['developer_id'] = employer.id
-                    session['role'] = 'developer'
-                    flash('Developer login successful.', 'success')
-                    return redirect(url_for('developer.dashboard'))
+                    session['role'] = 'developer_employer'
+                    session['logged_in'] = True
+                    flash('Developer employer login successful.', 'success')
+                    return redirect(url_for('home.home'))  # Redirect to homepage
                 else:
                     session['employer_id'] = employer.id
                     session['logged_in'] = True

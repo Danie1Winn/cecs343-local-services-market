@@ -13,11 +13,13 @@
             <h1>LocalLink</h1>
         </div>
         <div class="auth-container">
-            {% if session.get('role') == 'developer' %}
+            {% if session.get('role') == 'developer_worker' %}
+                <a href="{{ url_for('developer.dashboard') }}" class="auth-button">Developer Dashboard</a>
+            {% elif session.get('role') == 'developer_employer' %}
                 <a href="{{ url_for('developer.dashboard') }}" class="auth-button">Developer Dashboard</a>
             {% elif session.get('role') == 'worker' %}
                 <a href="{{ url_for('worker.worker_profile', worker_id=session.get('worker_id')) }}" class="auth-button">Worker Dashboard</a>
-            {% elif session.get('employer_id') %}
+            {% elif session.get('role') == 'employer' %}
                 <a href="{{ url_for('employer.employer_profile') }}" class="auth-button">Employer Dashboard</a>
             {% endif %}
             {% if session.get('logged_in') %}
