@@ -106,9 +106,13 @@ def worker_profile(worker_id):
         return redirect(url_for('worker.worker_profile', worker_id=worker_id))
 
     worker_skills = Skill.query.filter_by(worker_id=worker_id).all()
-    job_requests = JobPosting.query.filter_by(worker_id=worker_id, status='open').all()
+    pending_requests = Contract.query.filter_by(worker_id=worker_id, status='pending').order_by(Contract.job_date).all()
 
-    return render_template('worker_profile.html', worker=worker, form=form, skills=worker_skills, job_requests=job_requests)
+    return render_template('worker_profile.html', 
+                           worker=worker, 
+                           form=form, 
+                           skills=worker_skills, 
+                           pending_requests=pending_requests)
 
 @worker_bp.route('/update_skill/<int:skill_id>', methods=['POST'])
 def update_skill(skill_id):

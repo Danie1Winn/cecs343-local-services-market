@@ -3,6 +3,7 @@ from datetime import datetime
 
 class Contract(db.Model):
     __tablename__ = 'contracts'
+
     id = db.Column(db.Integer, primary_key=True)
     worker_id = db.Column(db.Integer, db.ForeignKey('workers.id'), nullable=False)
     employer_id = db.Column(db.Integer, db.ForeignKey('employers.id'), nullable=False)
@@ -14,3 +15,4 @@ class Contract(db.Model):
     # Relationships
     worker = db.relationship('Worker', back_populates='contracts')
     employer = db.relationship('Employer', back_populates='contracts')
+    job_posting = db.relationship('JobPosting', backref='contracts')  # New relationship for job postings

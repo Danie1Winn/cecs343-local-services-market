@@ -126,23 +126,34 @@
                 }
             </script>
 
-
             <!-- Display Job Requests -->
             <div class="job-requests">
                 <h2>Job Requests</h2>
-                <ul>
-                    {% for job in job_requests %}
-                    <li>
-                        <p><strong>{{ job.title }}</strong></p>
-                        <p>{{ job.description }}</p>
-                        <p>Rate: ${{ job.rate }}</p>
-                        <form method="POST" action="{{ url_for('worker.accept_job', job_id=job.id) }}">
-                            <button type="submit" class="button">Accept Job</button>
-                        </form>
-                    </li>
-                    {% endfor %}
-                </ul>
+                {% if pending_requests %}
+                    <ul>
+                        {% for request in pending_requests %}
+                        <li>
+                            <p><strong>Job Date:</strong> {{ request.job_date.strftime('%Y-%m-%d %H:%M') }}</p>
+                            {% if request.job_posting %}
+                                <p><strong>Description:</strong> {{ request.job_posting.description }}</p>
+                                <p><strong>Rate:</strong> ${{ "{:.2f".format(request.job_posting.rate) }}</p>
+                            {% else %}
+                                <p><em>No job posting details available.</em></p>
+                            {% endif %}
+                            <form method="POST" action="{{ url_for('worker.worker_accept_job', job_id=request.id) }}" style="display: inline;">
+                                <button type="submit" class="button">Accept</button>
+                            </form>
+                            <form method="POST" action="{{ url_for('worker.reject_job', job_id=request.id) }}" style="display: inline;">
+                                <button type="submit" class="button danger">Reject</button>
+                            </form>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No job requests at this time.</p>
+                {% endif %}
             </div>
+
             <!-- Display Cancellation Requests -->
             <div class="cancellation-requests">
                 <h2>Cancellation Requests</h2>
