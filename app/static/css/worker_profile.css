@@ -74,7 +74,7 @@ main {
 .cancellation-requests,
 .job-requests {
     padding: 20px;
-    background-color: #333; /* Consistent light gray card */
+    background-color: #333;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -117,7 +117,7 @@ input:focus {
 
 /* Skills List */
 .worker-skills ul {
-    list-style: none; /* Remove bullet points */
+    list-style: none;
     padding: 0;
 }
 

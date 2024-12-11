@@ -29,8 +29,9 @@
                 {% if skills %}
                     <ul>
                         {% for skill in skills %}
-                            <li>
+                            <li class="worker-skills-card">
                                 <strong>{{ skill.skill_name }}</strong> - Level: {{ skill.experience_level }}
+                                <p><strong>Description:</strong> {{ skill.description }}</p>
                                 {% if skill.rate_type != 'negotiable' %}
                                     <br><em>Rate:</em> ${{ "{:.2f}".format(skill.rate_value|default(0)) }}
                                 {% endif %}
