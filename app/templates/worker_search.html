@@ -36,8 +36,21 @@
                         <li class="worker-item">
                             <div class="worker-info">
                                 <h3>{{ worker.name }}</h3>
-                                <p>Service: {{ worker.service }}</p>
-                                <p>Distance: {{ worker.distance }}</p>
+                                <div class="skills">
+                                    <h4>Skills:</h4>
+                                    <ul>
+                                        {% for skill in worker.skills %}
+                                            <li>
+                                                <strong>{{ skill.skill_name }}</strong> - Level: {{ skill.experience_level }}<br>
+                                                <em>Rate Type:</em> {{ skill.rate_type.capitalize() }}
+                                                {% if skill.rate_type != 'negotiable' %}
+                                                    - <em>Rate:</em> ${{ "{:.2f}".format(skill.rate_value | float) }}
+                                                {% endif %}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <p><strong>Distance:</strong> {{ worker.distance }}</p>
                             </div>
                             <div class="worker-actions">
                                 <a href="{{ url_for('worker.worker_view', worker_id=worker.id) }}" class="button">View Profile</a>
@@ -48,7 +61,7 @@
             {% else %}
                 <p>No workers found for the selected criteria.</p>
             {% endif %}
-        </section>
+        </section>        
     </main>
     <footer>
         <p>&copy; 2024 LocalLink. All rights reserved.</p>

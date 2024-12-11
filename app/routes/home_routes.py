@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from geopy.distance import geodesic  # Install geopy with pip install geopy
+from sqlalchemy.orm import joinedload
 from app.models.worker import Worker  # Import the Worker model
 from app.models.skill import Skill  # Import the Skill model
 import csv
@@ -50,8 +51,8 @@ def search():
     all_skills = Skill.query.distinct(Skill.skill_name).all()
     skill_names = [skill.skill_name for skill in all_skills]
 
-    # Fetch workers from the database
-    workers = Worker.query.all()
+    # Fetch workers from the database with skills eagerly loaded
+    workers = Worker.query.options(joinedload(Worker.skills)).all()
 
     # Filter results
     results = []
@@ -75,7 +76,7 @@ def search():
                 results.append({
                     "id": worker.id,  # Ensure the ID is included
                     "name": worker.name,
-                    "service": "Multiple Services",
+                    "skills": worker.skills,  # Pass worker skills directly
                     "zip_code": worker.zip_code,
                     "distance": f"{distance:.1f} miles"
                 })

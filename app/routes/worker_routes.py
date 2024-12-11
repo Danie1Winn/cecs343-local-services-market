@@ -45,7 +45,6 @@ def worker_profile(worker_id):
             db.session.add(new_skill)
             db.session.commit()
 
-
         flash('Profile updated successfully!', 'success')
         return redirect(url_for('worker.worker_profile', worker_id=worker_id))
 
@@ -69,7 +68,6 @@ def update_skill(skill_id):
     skill.rate_type = request.form.get('rate_type')
     skill.rate_value = None if skill.rate_type == 'negotiable' else request.form.get('rate_value')
     db.session.commit()
-
 
     flash("Skill updated successfully!", "success")
     return redirect(url_for('worker.worker_profile', worker_id=worker_id))
@@ -128,6 +126,5 @@ def contact(worker_id):
         flash("Message cannot be empty.", "danger")
         return redirect(url_for('worker.worker_view', worker_id=worker_id))
 
-    # Placeholder for message handling (e.g., database storage or email sending)
     flash(f"Your message has been sent to {worker.name}.", "success")
     return redirect(url_for('worker.worker_view', worker_id=worker_id))
