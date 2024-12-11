@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template, redirect, url_for, request
+from flask import Blueprint, render_template, redirect, url_for, request, flash
 from geopy.distance import geodesic  # Install geopy with pip install geopy
 from app.models.worker import Worker  # Import the Worker model
+from app.models.skill import Skill  # Import the Skill model
 import csv
 import os
 
@@ -45,6 +46,10 @@ def search():
     # User's location based on input ZIP code
     user_location = get_lat_lon_from_zip(zip_code)
 
+    # Dynamically fetch unique skills from the database
+    all_skills = Skill.query.distinct(Skill.skill_name).all()
+    skill_names = [skill.skill_name for skill in all_skills]
+
     # Fetch workers from the database
     workers = Worker.query.all()
 
@@ -64,7 +69,9 @@ def search():
 
         # Include workers within their travel radius
         if distance <= worker.travel_distance:
-            if service_type == "any" or service_type.lower() in [skill.name.lower() for skill in worker.skills]:
+            if service_type == "any" or any(
+                service_type.lower() == skill.skill_name.lower() for skill in worker.skills
+            ):
                 results.append({
                     "id": worker.id,  # Ensure the ID is included
                     "name": worker.name,
@@ -73,4 +80,7 @@ def search():
                     "distance": f"{distance:.1f} miles"
                 })
 
-    return render_template('worker_search.html', results=results)
+    if not results:
+        flash("No workers found matching your criteria.", "info")
+
+    return render_template('worker_search.html', results=results, skills=skill_names)

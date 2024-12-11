@@ -4,7 +4,7 @@ from app.models.worker import Worker
 from app.models.skill import Skill
 from app.models.job_posting import JobPosting
 from app.models.contract import Contract
-from app.forms import WorkerSkillForm
+from app.forms import WorkerProfileForm
 
 worker_bp = Blueprint('worker', __name__)
 
@@ -12,70 +12,79 @@ worker_bp = Blueprint('worker', __name__)
 @worker_bp.route('/view/<int:worker_id>', methods=['GET'])
 def worker_view(worker_id):
     worker = Worker.query.get_or_404(worker_id)
-    worker_skills = Skill.query.filter_by(worker_id=worker_id).all()
-    return render_template('worker_view.html', worker=worker, skills=worker_skills)
-
-# Route to contact a worker
-@worker_bp.route('/contact/<int:worker_id>', methods=['POST'])
-def contact(worker_id):
-    worker = Worker.query.get_or_404(worker_id)
-    message = request.form.get('message')
-
-    if not message:
-        flash("Message cannot be empty.", "danger")
-        return redirect(url_for('worker.worker_view', worker_id=worker_id))
-
-    # Placeholder for actual message handling (e.g., database storage or email sending)
-    flash(f"Your message has been sent to {worker.name}.", "success")
-    return redirect(url_for('worker.worker_view', worker_id=worker_id))
+    skills = Skill.query.filter_by(worker_id=worker_id).all()
+    return render_template('worker_view.html', worker=worker, skills=skills)
 
 # Worker Profile for Editing
 @worker_bp.route('/profile/<int:worker_id>', methods=['GET', 'POST'])
 def worker_profile(worker_id):
     worker = Worker.query.get_or_404(worker_id)
-    form = WorkerSkillForm()
+
+    # Ensure logged-in worker matches the profile being edited
+    if session.get('worker_id') != worker_id:
+        flash("You are not authorized to edit this profile.", "danger")
+        return redirect(url_for('home.home'))
+
+    form = WorkerProfileForm(obj=worker)
 
     if form.validate_on_submit():
-        new_skill = Skill(
-            skill_name=form.skill_name.data,
-            experience_level=form.experience_level.data,
-            worker_id=worker_id
-        )
-        db.session.add(new_skill)
+        # Update profile fields
+        worker.about_me = form.about_me.data
+        worker.zip_code = form.zip_code.data
+        worker.travel_distance = form.travel_distance.data
         db.session.commit()
 
-        flash('Skill successfully added!', 'success')
+        # Add a new skill if skill fields are filled
+        if form.skill_name.data and form.experience_level.data:
+            new_skill = Skill(
+                skill_name=form.skill_name.data,
+                experience_level=form.experience_level.data,
+                worker_id=worker_id
+            )
+            db.session.add(new_skill)
+            db.session.commit()
+
+        flash('Profile updated successfully!', 'success')
         return redirect(url_for('worker.worker_profile', worker_id=worker_id))
 
+    # Fetch skills and job requests for the profile
     worker_skills = Skill.query.filter_by(worker_id=worker_id).all()
-    return render_template('worker_profile.html', worker=worker, form=form, skills=worker_skills)
+    job_requests = JobPosting.query.filter_by(worker_id=worker_id, status='open').all()
 
-# Route to create a post
-@worker_bp.route('/create_post', methods=['GET', 'POST'])
-def create_post():
+    return render_template('worker_profile.html', worker=worker, form=form, skills=worker_skills, job_requests=job_requests)
+
+# Route to update a skill
+@worker_bp.route('/update_skill/<int:skill_id>', methods=['POST'])
+def update_skill(skill_id):
+    skill = Skill.query.get_or_404(skill_id)
     worker_id = session.get('worker_id')
-    if not worker_id:
-        flash("You must be logged in as a worker to create a post.", "danger")
-        return redirect(url_for('login.login_page'))
 
-    if request.method == 'POST':
-        title = request.form['title']
-        description = request.form['description']
-        rate = float(request.form['rate'])
+    if skill.worker_id != worker_id:
+        flash("You are not authorized to edit this skill.", "danger")
+        return redirect(url_for('worker.worker_profile', worker_id=worker_id))
 
-        new_post = JobPosting(
-            title=title,
-            description=description,
-            rate=rate,
-            worker_id=worker_id,
-        )
-        db.session.add(new_post)
-        db.session.commit()
+    skill.skill_name = request.form.get('skill_name')
+    skill.experience_level = request.form.get('experience_level')
+    db.session.commit()
 
-        flash("Job post created successfully!", "success")
-        return redirect(url_for('worker.worker_page'))
+    flash("Skill updated successfully!", "success")
+    return redirect(url_for('worker.worker_profile', worker_id=worker_id))
 
-    return render_template('create_post.html')
+# Route to delete a skill
+@worker_bp.route('/delete_skill/<int:skill_id>', methods=['POST'])
+def delete_skill(skill_id):
+    skill = Skill.query.get_or_404(skill_id)
+    worker_id = session.get('worker_id')
+
+    if skill.worker_id != worker_id:
+        flash("You are not authorized to delete this skill.", "danger")
+        return redirect(url_for('worker.worker_profile', worker_id=worker_id))
+
+    db.session.delete(skill)
+    db.session.commit()
+
+    flash("Skill deleted successfully!", "success")
+    return redirect(url_for('worker.worker_profile', worker_id=worker_id))
 
 # Route to accept a job
 @worker_bp.route('/accept_job/<int:job_id>', methods=['POST'])
@@ -89,7 +98,7 @@ def accept_job(job_id):
 
     if job_posting.status != 'open':
         flash("This job is no longer available.", "danger")
-        return redirect(url_for('worker.worker_page'))
+        return redirect(url_for('worker.worker_profile', worker_id=worker_id))
 
     job_posting.status = 'accepted'
     new_contract = Contract(
@@ -103,4 +112,18 @@ def accept_job(job_id):
     db.session.commit()
 
     flash("Job accepted successfully!", "success")
-    return redirect(url_for('worker.worker_page'))
+    return redirect(url_for('worker.worker_profile', worker_id=worker_id))
+
+# Route to contact a worker
+@worker_bp.route('/contact/<int:worker_id>', methods=['POST'])
+def contact(worker_id):
+    worker = Worker.query.get_or_404(worker_id)
+    message = request.form.get('message')
+
+    if not message:
+        flash("Message cannot be empty.", "danger")
+        return redirect(url_for('worker.worker_view', worker_id=worker_id))
+
+    # Placeholder for message handling (e.g., database storage or email sending)
+    flash(f"Your message has been sent to {worker.name}.", "success")
+    return redirect(url_for('worker.worker_view', worker_id=worker_id))

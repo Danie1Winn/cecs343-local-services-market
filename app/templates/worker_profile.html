@@ -4,36 +4,90 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ worker.name }}'s Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/worker_profile.css') }}">
 </head>
 <body>
-    <h1>{{ worker.name }}'s Profile</h1>
-    <p>Phone Number: {{ worker.phone_number }}</p>
-    <p>ZIP Code: {{ worker.zip_code }}</p>
-    <p>Travel Distance: {{ worker.travel_distance }} miles</p>
+    <header>
+        <div class="logo">
+            <h1>LocalLink</h1>
+        </div>
+        <nav>
+            <a href="{{ url_for('home.home') }}" class="button">Home</a>
+        </nav>
+    </header>
 
-    <form method="POST" action="">
-        {{ form.hidden_tag() }}
-        <div>
-            {{ form.skill_name.label }}
-            {{ form.skill_name() }}
-        </div>
-        <div>
-            {{ form.experience_level.label }}
-            {{ form.experience_level() }}
-        </div>
-        <div>
-            {{ form.submit() }}
-        </div>
-    </form>
+    <main>
+        <section class="profile-card">
+            <div class="worker-details">
+                <h2>{{ worker.name }}'s Profile</h2>
+                <p><strong>Phone Number:</strong> {{ worker.phone_number }}</p>
 
-    <h2>Your Skills</h2>
-    <ul>
-        {% for skill in skills %}
-        <li>
-            {{ skill.skill_name }} - Experience Level: {{ skill.experience_level }}
-        </li>
-        {% endfor %}
-    </ul>
-    <a href="{{ url_for('home.home') }}">Back to Home</a>
+                <form method="POST" action="">
+                    {{ form.hidden_tag() }}
+                    <div>
+                        {{ form.about_me.label }}
+                        {{ form.about_me() }}
+                    </div>
+                    <div>
+                        {{ form.zip_code.label }}
+                        {{ form.zip_code() }}
+                    </div>
+                    <div>
+                        {{ form.travel_distance.label }}
+                        {{ form.travel_distance() }}
+                    </div>
+                    <div>
+                        {{ form.skill_name.label }}
+                        {{ form.skill_name() }}
+                    </div>
+                    <div>
+                        {{ form.experience_level.label }}
+                        {{ form.experience_level() }}
+                    </div>
+                    <button type="submit" class="button">Save Changes</button>
+                </form>
+            </div>
+
+            <!-- Display Skills -->
+            <div class="worker-skills">
+                <h2>Your Skills</h2>
+                <ul>
+                    {% for skill in skills %}
+                    <li>
+                        <form method="POST" action="{{ url_for('worker.update_skill', skill_id=skill.id) }}" style="display: flex; gap: 10px;">
+                            <input type="text" name="skill_name" value="{{ skill.skill_name }}" required>
+                            <input type="number" name="experience_level" value="{{ skill.experience_level }}" min="1" max="5" required>
+                            <button type="submit" class="button">Update</button>
+                        </form>
+                        <form method="POST" action="{{ url_for('worker.delete_skill', skill_id=skill.id) }}" style="display: inline;">
+                            <button type="submit" class="button danger">Delete</button>
+                        </form>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Display Job Requests -->
+            <div class="job-requests">
+                <h2>Job Requests</h2>
+                <ul>
+                    {% for job in job_requests %}
+                    <li>
+                        <p><strong>{{ job.title }}</strong></p>
+                        <p>{{ job.description }}</p>
+                        <p>Rate: ${{ job.rate }}</p>
+                        <form method="POST" action="{{ url_for('worker.accept_job', job_id=job.id) }}">
+                            <button type="submit" class="button">Accept Job</button>
+                        </form>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 LocalLink. All rights reserved.</p>
+    </footer>
 </body>
 </html>

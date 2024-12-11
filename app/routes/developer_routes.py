@@ -36,7 +36,7 @@ def create_account():
                 password=hashed_password,
                 zip_code=zip_code,
                 travel_distance=travel_distance,
-                user_role='developer'
+                user_role='regular'
             )
             db.session.add(new_worker)
         elif account_type == 'employer':
@@ -44,7 +44,7 @@ def create_account():
                 name=name,
                 phone_number=phone_number,
                 password=hashed_password,
-                user_role='developer'
+                user_role='regular'
             )
             db.session.add(new_employer)
 

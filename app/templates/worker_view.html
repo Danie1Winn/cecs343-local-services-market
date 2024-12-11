@@ -41,13 +41,9 @@
             <div class="contact-worker">
                 <h2>Contact {{ worker.name }}</h2>
                 <form method="POST" action="{{ url_for('worker.contact', worker_id=worker.id) }}">
-                    <div>
-                        <textarea id="message" name="message" rows="5" placeholder="Write your message here..." required></textarea>
-                    </div>
-                    <div>
-                        <button type="submit" class="button">Send Message</button>
-                    </div>
-                </form>
+                    <textarea id="message" name="message" rows="5" placeholder="Write your message here..." required></textarea>
+                    <button type="submit" class="button">Send Message</button>
+                </form>                
             </div>
         </section>
     </main>

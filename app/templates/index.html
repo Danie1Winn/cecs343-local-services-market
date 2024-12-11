@@ -15,6 +15,8 @@
         <div class="auth-container">
             {% if session.get('role') == 'developer' %}
                 <a href="{{ url_for('developer.dashboard') }}" class="auth-button">Developer Dashboard</a>
+            {% elif session.get('role') == 'worker' %}
+                <a href="{{ url_for('worker.worker_profile', worker_id=session.get('worker_id')) }}" class="auth-button">Worker Dashboard</a>
             {% endif %}
             {% if session.get('logged_in') %}
                 <a href="{{ url_for('login.logout') }}" class="auth-button">Logout</a>
