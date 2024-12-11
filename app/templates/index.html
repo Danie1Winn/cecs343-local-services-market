@@ -18,7 +18,7 @@
             {% elif session.get('role') == 'worker' %}
                 <a href="{{ url_for('worker.worker_profile', worker_id=session.get('worker_id')) }}" class="auth-button">Worker Dashboard</a>
             {% elif session.get('employer_id') %}
-                <a href="{{ url_for('employer.employer_page') }}" class="auth-button">Employer Dashboard</a>
+                <a href="{{ url_for('employer.employer_profile') }}" class="auth-button">Employer Dashboard</a>
             {% endif %}
             {% if session.get('logged_in') %}
                 <a href="{{ url_for('login.logout') }}" class="auth-button">Logout</a>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employer Dashboard</title>
+    <title>Employer Profile</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/employer_profile.css') }}">
 </head>
 <body>
@@ -17,61 +17,48 @@
     </header>
 
     <main>
-        <section class="dashboard">
-            <h2>Employer Dashboard</h2>
-
-            <!-- Pending Job Requests -->
-            <div class="job-section">
-                <h3>Pending Job Requests</h3>
-                {% if pending_jobs %}
-                    <ul>
-                        {% for job in pending_jobs %}
+        <section class="profile-card">
+            <!-- Pending Requests Section -->
+            <div class="job-requests">
+                <h2>Pending Job Requests</h2>
+                <ul>
+                    {% if pending_requests %}
+                        {% for request in pending_requests %}
                             <li>
-                                <strong>Worker:</strong> {{ job.worker.name }}<br>
-                                <strong>Rate:</strong> {{ job.rate_type.capitalize() }} 
-                                {% if job.rate_type != 'negotiable' %}
-                                    ${{ "{:.2f".format(job.rate_value) }}
-                                {% else %}
-                                    Agreed upon later
-                                {% endif %}
-                                <br>
-                                <strong>Date/Time:</strong> {{ job.created_at.strftime('%Y-%m-%d %H:%M') }}<br>
-                                <form method="POST" action="{{ url_for('employer.cancel_request', job_id=job.id) }}">
+                                <p><strong>Description:</strong> {{ request.description }}</p>
+                                <p><strong>Scheduled Date:</strong> {{ request.job_date.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                                <form method="POST" action="{{ url_for('employer.cancel_request', job_id=request.id) }}">
                                     <button type="submit" class="button danger">Cancel Request</button>
                                 </form>
                             </li>
                         {% endfor %}
-                    </ul>
-                {% else %}
-                    <p>No pending requests.</p>
-                {% endif %}
+                    {% else %}
+                        <p>No pending job requests at this time.</p>
+                    {% endif %}
+                </ul>
             </div>
 
-            <!-- Active Jobs -->
-            <div class="job-section">
-                <h3>Active Jobs</h3>
-                {% if active_jobs %}
-                    <ul>
+            <!-- Active Jobs Section -->
+            <div class="active-jobs">
+                <h2>Active Jobs</h2>
+                <ul>
+                    {% if active_jobs %}
                         {% for job in active_jobs %}
                             <li>
-                                <strong>Worker:</strong> {{ job.worker.name }}<br>
-                                <strong>Rate:</strong> {{ job.rate_type.capitalize() }} 
-                                {% if job.rate_type != 'negotiable' %}
-                                    ${{ "{:.2f".format(job.rate_value) }}
-                                {% else %}
-                                    Agreed upon later
-                                {% endif %}
-                                <br>
-                                <strong>Date/Time:</strong> {{ job.created_at.strftime('%Y-%m-%d %H:%M') }}<br>
-                                <form method="POST" action="{{ url_for('employer.request_cancellation', job_id=job.id) }}">
-                                    <button type="submit" class="button warning">Request Cancellation</button>
+                                <p><strong>Description:</strong> {{ job.description }}</p>
+                                <p><strong>Scheduled Date:</strong> {{ job.job_date.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                                <form method="POST" action="{{ url_for('employer.complete_job', job_id=job.id) }}">
+                                    <button type="submit" class="button">Mark as Completed</button>
+                                </form>
+                                <form method="POST" action="{{ url_for('employer.cancel_request', job_id=job.id) }}">
+                                    <button type="submit" class="button danger">Cancel Job</button>
                                 </form>
                             </li>
                         {% endfor %}
-                    </ul>
-                {% else %}
-                    <p>No active jobs.</p>
-                {% endif %}
+                    {% else %}
+                        <p>No active jobs at this time.</p>
+                    {% endif %}
+                </ul>
             </div>
         </section>
     </main>

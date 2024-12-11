@@ -109,6 +109,7 @@ def worker_profile(worker_id):
     # Fetch pending and active jobs
     pending_requests = Contract.query.filter_by(worker_id=worker_id, status='pending').all()
     active_jobs = Contract.query.filter_by(worker_id=worker_id, status='accepted').all()
+    cancel_requests = Contract.query.filter_by(worker_id=worker_id, status='cancel_requested').all()
 
     worker_skills = Skill.query.filter_by(worker_id=worker_id).all()
 
@@ -119,6 +120,7 @@ def worker_profile(worker_id):
         skills=worker_skills,
         pending_requests=pending_requests,
         active_jobs=active_jobs,
+        cancel_requests=cancel_requests,
     )
 
 @worker_bp.route('/update_skill/<int:skill_id>', methods=['POST'])
