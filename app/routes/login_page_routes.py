@@ -68,6 +68,6 @@ def login_page():
 @login_bp.route('/logout')
 def logout():
     session.clear()
-    flash('You have been logged out.', 'info')
     logging.info("Session cleared. Logged out.")
     return redirect(url_for('home.home'))
+

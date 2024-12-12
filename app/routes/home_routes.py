@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash
+from flask import Blueprint, render_template, redirect, url_for, request, flash, session
 from geopy.distance import geodesic
 from sqlalchemy.orm import joinedload
 from app.models.worker import Worker
@@ -36,6 +36,7 @@ def home():
 
 @home_bp.route('/')
 def root():
+    session.clear()
     return redirect(url_for('home.home'))
 
 
