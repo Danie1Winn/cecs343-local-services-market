@@ -218,7 +218,7 @@ def go_online(worker_id):
     if auto_offline_minutes:
         worker.auto_offline_time = datetime.utcnow() + timedelta(minutes=int(auto_offline_minutes))
     else:
-        worker.auto_offline_time = None  # Manual offline
+        worker.auto_offline_time = None
 
     worker.is_online = True
     db.session.commit()
@@ -236,7 +236,7 @@ def go_offline(worker_id):
         return redirect(url_for('home.home'))
 
     worker.is_online = False
-    worker.auto_offline_time = None  # Reset auto-offline time
+    worker.auto_offline_time = None
     db.session.commit()
 
     flash("You are now offline.", "success")

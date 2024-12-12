@@ -15,7 +15,7 @@ def dashboard():
 @developer_bp.route('/create_account', methods=['GET', 'POST'])
 def create_account():
     if session.get('role') not in ['developer', 'developer_worker', 'developer_employer']:
-        abort(403)  # Access forbidden for non-developers
+        abort(403)
 
     if request.method == 'POST':
         account_type = request.form['account_type']
@@ -24,8 +24,8 @@ def create_account():
         password = request.form['password']
 
         # Default values for worker-specific fields
-        zip_code = request.form.get('zip_code', '00000')  # Default ZIP code
-        travel_distance = request.form.get('travel_distance', 10)  # Default travel distance
+        zip_code = request.form.get('zip_code', '00000')
+        travel_distance = request.form.get('travel_distance', 10)
 
         hashed_password = generate_password_hash(password)  # Generate hashed password
 
@@ -57,10 +57,10 @@ def create_account():
 @developer_bp.route('/test_accounts')
 def view_test_accounts():
     if session.get('role') not in ['developer', 'developer_worker', 'developer_employer']:
-        abort(403)  # Access forbidden for non-developers
+        abort(403)
 
-    workers = Worker.query.filter_by(user_role='developer').all()
-    employers = Employer.query.filter_by(user_role='developer').all()
+    workers = Worker.query.all()
+    employers = Employer.query.all()
 
     return render_template('test_accounts.html', workers=workers, employers=employers)
 

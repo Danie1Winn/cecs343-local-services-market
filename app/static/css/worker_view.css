@@ -112,7 +112,7 @@ textarea:focus {
 .button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #4CAF50; /* Green background */
+    background-color: #4CAF50;
     color: white;
     text-decoration: none;
     font-size: 14px;
@@ -125,12 +125,12 @@ textarea:focus {
 }
 
 .button:hover {
-    background-color: #45a049; /* Slightly darker green */
-    transform: translateY(-2px); /* Lift effect */
+    background-color: #45a049;
+    transform: translateY(-2px);
 }
 
 .button:active {
-    transform: translateY(0); /* Reset on click */
+    transform: translateY(0);
 }
 
 

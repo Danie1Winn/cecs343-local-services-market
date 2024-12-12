@@ -27,7 +27,7 @@ def login_page():
                     session['role'] = 'developer_worker'
                     session['logged_in'] = True
                     flash('Developer worker login successful.', 'success')
-                    return redirect(url_for('home.home'))  # Redirect to homepage
+                    return redirect(url_for('home.home'))
                 else:
                     session['worker_id'] = worker.id
                     session['logged_in'] = True
@@ -50,7 +50,7 @@ def login_page():
                     session['role'] = 'developer_employer'
                     session['logged_in'] = True
                     flash('Developer employer login successful.', 'success')
-                    return redirect(url_for('home.home'))  # Redirect to homepage
+                    return redirect(url_for('home.home'))
                 else:
                     session['employer_id'] = employer.id
                     session['logged_in'] = True

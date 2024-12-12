@@ -1,7 +1,7 @@
 from app import db
 
 class User(db.Model):
-    __abstract__ = True # Don't create a table in the database
+    __abstract__ = True
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)

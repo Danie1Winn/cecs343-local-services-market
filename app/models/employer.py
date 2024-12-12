@@ -8,7 +8,7 @@ class Employer(db.Model):
     name = db.Column(db.String(100), nullable=False)
     phone_number = db.Column(db.String(15), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
-    user_role = db.Column(db.String(50), default='regular')  # Added role field
+    user_role = db.Column(db.String(50), default='regular') 
 
     # Relationships
     job_postings = relationship('JobPosting', back_populates='employer')

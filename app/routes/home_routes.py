@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
-from geopy.distance import geodesic  # Install geopy with pip install geopy
+from geopy.distance import geodesic
 from sqlalchemy.orm import joinedload
-from app.models.worker import Worker  # Import the Worker model
-from app.models.skill import Skill  # Import the Skill model
+from app.models.worker import Worker
+from app.models.skill import Skill
 import csv
 import os
 
@@ -64,7 +64,7 @@ def search():
         # Calculate distance only for workers with valid ZIP codes
         worker_location = get_lat_lon_from_zip(worker.zip_code)
         if None in worker_location or None in user_location:
-            continue  # Skip invalid ZIP codes
+            continue 
 
         distance = geodesic(user_location, worker_location).miles
 
@@ -74,9 +74,9 @@ def search():
                 service_type.lower() == skill.skill_name.lower() for skill in worker.skills
             ):
                 results.append({
-                    "id": worker.id,  # Ensure the ID is included
+                    "id": worker.id,
                     "name": worker.name,
-                    "skills": worker.skills,  # Pass worker skills directly
+                    "skills": worker.skills,
                     "zip_code": worker.zip_code,
                     "distance": f"{distance:.1f} miles"
                 })

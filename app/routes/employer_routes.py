@@ -30,7 +30,7 @@ def create_request():
     # Get form data
     worker_id = request.form.get('worker_id')
     description = request.form.get('description')
-    job_date = request.form.get('job_date')  # Date and time from the form
+    job_date = request.form.get('job_date')
 
     if not worker_id or not description or not job_date:
         flash("All fields are required.", "danger")
@@ -38,7 +38,7 @@ def create_request():
 
     # Parse job_date
     try:
-        job_date = datetime.strptime(job_date, '%Y-%m-%dT%H:%M')  # Adjust format as needed
+        job_date = datetime.strptime(job_date, '%Y-%m-%dT%H:%M')
     except ValueError:
         flash("Invalid date format. Use YYYY-MM-DDTHH:MM.", "danger")
         return redirect(url_for('worker.worker_view', worker_id=worker_id))
@@ -47,7 +47,7 @@ def create_request():
     new_contract = Contract(
         worker_id=worker_id,
         employer_id=employer_id,
-        description=description,  # Save the job description
+        description=description,
         job_date=job_date,
         status='pending',
     )
